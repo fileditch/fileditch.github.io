@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FileDitch — API</title>
+<script defer="defer" data-domain="new.fileditch.com" src="FileDitch%20%E2%80%94%20API_files/script_027R.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap');
+:root{--bg:#0f0f12;--surface:#17171c;--surface2:#1e1e26;--border:#252530;--dim:#383848;--muted:#5a5a78;--text:#c2c2d8;--bright:#eeeef5;--accent:#7c6af7;--accent2:#4fc9a4;--red:#e05555}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:64px 20px 0;font-size:14px;line-height:1.7}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,.12),transparent);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;width:100%;max-width:720px;flex:1;padding-bottom:80px}
+.back{display:inline-flex;align-items:center;gap:8px;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;margin-bottom:48px;transition:color .15s}
+.back:hover{color:var(--text)}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3rem);color:var(--bright);letter-spacing:-.02em;margin-bottom:8px}
+h1 span{color:var(--accent)}
+.sub{font-size:.7rem;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:48px}
+h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--bright);margin:36px 0 14px}
+p{color:var(--text);margin-bottom:14px;font-size:.82rem}
+a.il{color:var(--accent);text-decoration:none}a.il:hover{text-decoration:underline}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin-bottom:14px}
+.lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+pre{font-family:'DM Mono',monospace;font-size:.76rem;color:var(--accent2);overflow-x:auto;line-height:1.9;white-space:pre-wrap;word-break:break-all}
+.tag{display:inline-block;font-size:.58rem;letter-spacing:.1em;padding:2px 8px;border-radius:3px;font-weight:500;text-transform:uppercase;margin-right:8px;background:rgba(124,106,247,.15);color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+td{padding:8px 0;border-bottom:1px solid var(--border);vertical-align:top}
+td:first-child{color:var(--accent);width:120px;padding-right:16px}
+tr:last-child td{border-bottom:none}
+footer{position:relative;z-index:1;width:100%;border-top:1px solid var(--border);margin-top:auto;padding:26px 20px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 28px}
+footer a{font-size:.62rem;color:var(--muted);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .15s;display:flex;align-items:center;gap:7px}
+footer a:hover{color:var(--text)}
+footer a svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+</style>
+</head>
+<body cz-shortcut-listen="true">
+<div class="wrap">
+  <a href="/" class="back">← back</a>
+  <h1>FILE<span>DITCH</span> API</h1>
+  <p class="sub">Simple HTTP uploads, no auth</p>
+
+  <p>The FileDitch API is dead simple. POST a file, get a JSON response with a URL. No API keys, no accounts, no bullshit.</p>
+
+  <h2>Permanent uploads — new.fileditch.com</h2>
+  <p>Files are kept as long as storage allows — no scheduled expiry.</p>
+  <div class="block">
+    <div class="lbl">Endpoint</div>
+    <pre><span class="tag">POST</span>https://new.fileditch.com/upload.php</pre>
+  </div>
+  <div class="block">
+    <div class="lbl">Raw body upload — fastest method</div>
+    <pre>curl -T yourfile.mp4 "https://new.fileditch.com/upload.php?filename=yourfile.mp4"</pre>
+  </div>
+  <div class="block">
+    <div class="lbl">Raw POST with --data-binary</div>
+    <pre>curl -X POST \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @yourfile.mp4 \
+  "https://new.fileditch.com/upload.php?filename=yourfile.mp4"</pre>
+  </div>
+  <div class="block">
+    <div class="lbl">Multipart — also works</div>
+    <pre>curl -F "file=@yourfile.mp4" https://new.fileditch.com/upload.php</pre>
+  </div>
+
+  <h2>Temp uploads — temp.fileditch.com</h2>
+  <p>Same API, swap the host. Files uploaded here are <strong>automatically deleted 72 hours after upload</strong> — ideal for one-off transfers.</p>
+  <div class="block">
+    <div class="lbl">Endpoint</div>
+    <pre><span class="tag">POST</span>https://temp.fileditch.com/upload.php</pre>
+  </div>
+  <div class="block">
+    <div class="lbl">Example</div>
+    <pre>curl -T yourfile.mp4 "https://temp.fileditch.com/upload.php?filename=yourfile.mp4"</pre>
+  </div>
+
+  <h2>Filename</h2>
+  <p>The server resolves the filename in this order. The first match wins:</p>
+  <div class="block">
+    <pre>1.  ?filename=  query parameter
+2.  X-Filename  request header
+3.  Content-Disposition header  (filename="...")
+4.  Multipart field filename
+5.  Random hex string           (fallback)</pre>
+  </div>
+  <p>Spaces are replaced with underscores automatically.</p>
+
+  <h2>Success response</h2>
+  <div class="block">
+    <table>
+      <tbody><tr><td>success</td><td>boolean — always true on success</td></tr>
+      <tr><td>url</td><td>string — direct link to the uploaded file</td></tr>
+      <tr><td>filename</td><td>string — final filename stored on server</td></tr>
+      <tr><td>size</td><td>integer — file size in bytes</td></tr>
+    </tbody></table>
+  </div>
+  <div class="block">
+    <div class="lbl">Example</div>
+    <pre>{
+  "success": true,
+  "url": "https://fileditchfiles.me/file.php?f=/alpha0/a3f9c.../yourfile.mp4",
+  "filename": "yourfile.mp4",
+  "size": 104857600
+}</pre>
+  </div>
+
+  <h2>Error response</h2>
+  <div class="block">
+    <pre>{ "error": "description" }</pre>
+  </div>
+  <div class="block">
+    <table>
+      <tbody><tr><td>400</td><td>Empty file, or no file sent</td></tr>
+      <tr><td>403</td><td>Blocked file type (executables, scripts, web files)</td></tr>
+      <tr><td>405</td><td>Wrong HTTP method</td></tr>
+      <tr><td>413</td><td>File exceeds 100 GB limit</td></tr>
+      <tr><td>500</td><td>Server error</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2>Limits</h2>
+  <div class="block">
+    <table>
+      <tbody><tr><td>Max file size</td><td>100 GB</td></tr>
+      <tr><td>Permanent retention</td><td>Indefinite, storage permitting (new.fileditch.com)</td></tr>
+      <tr><td>Temp retention</td><td>72 hours — files are auto-deleted (temp.fileditch.com)</td></tr>
+      <tr><td>Blocked extensions</td><td>php, html, js, exe, apk, sh, py, bat and other executables &amp; scripts</td></tr>
+      <tr><td>Authentication</td><td>None required</td></tr>
+    </tbody></table>
+  </div>
+</div>
+<footer>
+  <a href="https://redretep.github.io">ABOUT ME</a>
+  <a href="/faq.html">FAQ</a>
+  <a href="/api.html">API</a>
+  <a href="mailto:peterdbaltes@gmail.com">Contact</a>
+  <a href="https://github.com/redretep/fileditch">GITHUB</a>
+</footer>
+
+
+<span style="visibility: hidden;" id="__TIMER_INJECTION_FLAG__{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"></span><protonpass-root-f374 data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-f374></body></html>
