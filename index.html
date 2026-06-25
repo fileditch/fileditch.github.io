@@ -60,6 +60,7 @@
         }
 
         .app-container {
+            position: relative;
             max-width: 1000px;
             width: 100%;
             margin: 0 auto;
@@ -68,6 +69,31 @@
             flex-direction: column;
             align-items: center;
             flex-grow: 1;
+        }
+
+        .btn-update-log {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all var(--transition-fast);
+            z-index: 100;
+        }
+
+        .btn-update-log:hover {
+            color: var(--accent-purple);
+            border-color: var(--accent-purple);
+            background: rgba(126, 115, 255, 0.05);
+            box-shadow: 0 0 15px var(--accent-purple-glow);
         }
 
         /* Header & Brand styling */
@@ -823,6 +849,9 @@
 <body>
 
     <div class="app-container">
+        <!-- Floating Update Log Button -->
+        <button type="button" class="btn-update-log" id="update-log-btn">Update Log</button>
+
         <!-- Brand Header Section -->
         <header>
             <h1 class="brand-title"><span class="brand-file">FILE</span><span class="brand-ditch">DITCH</span></h1>
@@ -872,8 +901,8 @@
                 </div>
                 <div class="streamer-container">
                     <div class="settings-group" style="margin-bottom: 1rem; background: rgba(0,0,0,0.2);">
-                        <label class="settings-label" for="streamer-input">Paste Fileditch Link</label>
-                        <input type="text" id="streamer-input" class="streamer-input" placeholder="https://fileditchfiles.me/file.php?f=..." value="">
+                        <label class="settings-label" for="streamer-input">Paste Share Link or File Path</label>
+                        <input type="text" id="streamer-input" class="streamer-input" placeholder="##alpha10/4e4f417ba5d06168b288/filename.png" value="">
                     </div>
                     <button class="btn-streamer" id="btn-stream">stream/preview File</button>
                     
@@ -1086,7 +1115,20 @@
             // Fileditch Audio/Video/Image/Document Streamer logic
             streamBtn.addEventListener('click', async () => {
                 const inputUrl = streamerInput.value.trim();
-                const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(inputUrl)}`;
+                
+                let resolvedUrl = inputUrl;
+                if (inputUrl) {
+                    const hashIndex = inputUrl.indexOf('#');
+                    if (hashIndex !== -1) {
+                        const filePath = inputUrl.substring(hashIndex).replace(/^#+/, '').replace(/^\/+/, '');
+                        resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                    } else if (!inputUrl.startsWith('http://') && !inputUrl.startsWith('https://') && !inputUrl.startsWith('file://')) {
+                        const filePath = inputUrl.replace(/^\/+/, '');
+                        resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                    }
+                }
+
+                const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
 
                 // Reset Player UI State
                 streamerError.style.display = 'none';
@@ -1106,7 +1148,7 @@
                 rendererFallback.style.display = 'none';
 
                 if (!inputUrl) {
-                    showStreamerError("Please paste a valid Fileditch URL.");
+                    showStreamerError("Please paste a valid share URL or file path.");
                     return;
                 }
 
@@ -1653,12 +1695,23 @@
             // Utility: Convert Fileditch URL to custom share URL with double hash
             function convertToShareUrl(url) {
                 if (!url) return url;
-                const match = url.match(/[\?&]f=([^&]+)/);
-                if (match && match[1]) {
-                    const filePath = match[1].replace(/^\/+/, '');
+                
+                // 1. Try to match ?f= or &f= first
+                const matchF = url.match(/[\?&]f=([^&]+)/);
+                if (matchF && matchF[1]) {
+                    const filePath = matchF[1].replace(/^\/+/, '');
                     let base = window.location.origin + window.location.pathname;
                     return `${base}##${filePath}`;
                 }
+                
+                // 2. Otherwise, look for /alphaX/... in the URL path
+                const matchAlpha = url.match(/(\/alpha\d+\/.*)/);
+                if (matchAlpha && matchAlpha[1]) {
+                    const filePath = matchAlpha[1].split('?')[0].replace(/^\/+/, '');
+                    let base = window.location.origin + window.location.pathname;
+                    return `${base}##${filePath}`;
+                }
+                
                 return url;
             }
 
@@ -1674,10 +1727,15 @@
             // Modal Overlay Event Listeners
             const uploadMethodInfoBtn = document.getElementById('upload-method-info-btn');
             const streamerInfoBtn = document.getElementById('streamer-info-btn');
+            const updateLogBtn = document.getElementById('update-log-btn');
+            
             const uploadMethodOverlay = document.getElementById('upload-method-overlay');
             const streamerInfoOverlay = document.getElementById('streamer-info-overlay');
+            const updateLogOverlay = document.getElementById('update-log-overlay');
+            
             const closeUploadMethodOverlay = document.getElementById('close-upload-method-overlay');
             const closeStreamerInfoOverlay = document.getElementById('close-streamer-info-overlay');
+            const closeUpdateLogOverlay = document.getElementById('close-update-log-overlay');
 
             uploadMethodInfoBtn.addEventListener('click', () => {
                 uploadMethodOverlay.style.display = 'flex';
@@ -1685,11 +1743,18 @@
             streamerInfoBtn.addEventListener('click', () => {
                 streamerInfoOverlay.style.display = 'flex';
             });
+            updateLogBtn.addEventListener('click', () => {
+                updateLogOverlay.style.display = 'flex';
+            });
+            
             closeUploadMethodOverlay.addEventListener('click', () => {
                 uploadMethodOverlay.style.display = 'none';
             });
             closeStreamerInfoOverlay.addEventListener('click', () => {
                 streamerInfoOverlay.style.display = 'none';
+            });
+            closeUpdateLogOverlay.addEventListener('click', () => {
+                updateLogOverlay.style.display = 'none';
             });
 
             // Close overlays when clicking outside the content
@@ -1699,6 +1764,9 @@
                 }
                 if (e.target === streamerInfoOverlay) {
                     streamerInfoOverlay.style.display = 'none';
+                }
+                if (e.target === updateLogOverlay) {
+                    updateLogOverlay.style.display = 'none';
                 }
             });
 
@@ -1759,7 +1827,7 @@
             <div class="modal-body">
                 <div>
                     <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">How it works:</strong>
-                    Paste a Fileditch viewer link (e.g., `https://fileditchfiles.me/file.php?f=...`). The streamer fetches the HTML source of the page through a Worker proxy (`api.pidi.workers.dev`) to bypass browser CORS blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens), and loads the direct stream in the browser.
+                    Paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>). The streamer fetches the HTML source of the page through a Worker proxy (<code>api.pidi.workers.dev</code>) to bypass browser CORS blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens), and loads the direct stream in the browser.
                 </div>
                 <div>
                     <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Supported Filetypes for Streaming:</strong>
@@ -1768,6 +1836,53 @@
                         <li><strong>Video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
                         <li><strong>Image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
                         <li><strong>Document:</strong> pdf, txt, log, json, md, csv</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Log Overlay -->
+    <div id="update-log-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="panel-title">Update Log</h3>
+                <button class="btn-cancel" id="close-update-log-overlay" style="font-size: 1.2rem;">✕</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
+                <div style="border-left: 2px solid var(--accent-purple); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">June 25, 2026</div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Custom Double-Hash sharing links & ad-free streaming</strong>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                        <li>Files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>) instead of standard FileDitch page links.</li>
+                        <li>Shared hash links automatically load and play in the ad-free, tracker-free media player.</li>
+                        <li>Cleaned up all <code>fileditchfiles.me</code> domain references from the frontend.</li>
+                    </ul>
+                </div>
+                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 24, 2026</div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Consolidated Uploads Interface & Info Overlays</strong>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                        <li>Merged Active Queue and Upload History into a single unified "Uploads Interface" panel.</li>
+                        <li>Relocated the Auto-Clear Queue configuration directly into the uploads header.</li>
+                        <li>Added interactive explanation modals for Upload Methods and Fileditch Streamer.</li>
+                        <li>Added a policy warning indicating file deletes are client-side only.</li>
+                    </ul>
+                </div>
+                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 23, 2026</div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">ZIP Streaming Deprecated</strong>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                        <li>Removed JSZip and unzipit range-request streaming libraries.</li>
+                        <li>Removed all ZIP-related code references from the main panel and FAQ list.</li>
+                    </ul>
+                </div>
+                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 20, 2026</div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Initial Launch</strong>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                        <li>Dark mode obsidian theme with monospace typography.</li>
+                        <li>Multipart and Raw upload support with instant media previews.</li>
                     </ul>
                 </div>
             </div>
