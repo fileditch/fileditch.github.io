@@ -762,6 +762,62 @@
                 opacity: 1;
             }
         }
+
+        /* Modal Overlay Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 9, 14, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 0.2s forwards;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            transform: scale(0.95);
+            animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #b3aebf;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleUp {
+            to { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -789,31 +845,29 @@
         </div>
 
         <!-- Settings block to customize raw/multipart upload methods -->
-        <div class="settings-panel">
-            <div class="settings-group">
-                <label class="settings-label" for="upload-method">Upload Method</label>
+        <div class="settings-panel" style="grid-template-columns: 1fr; max-width: 680px;">
+            <div class="settings-group" style="position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <label class="settings-label" for="upload-method">Upload Method</label>
+                    <button type="button" class="btn-history-action" id="upload-method-info-btn" style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;" title="Upload Methods Info">ⓘ</button>
+                </div>
                 <select class="settings-select" id="upload-method">
                     <option value="multipart" selected>Multipart Form-Data (Recommended)</option>
                     <option value="raw">Raw Body Stream (Fast)</option>
                 </select>
             </div>
-            <div class="settings-group">
-                <label class="settings-label" for="auto-clear">Queue</label>
-                <select class="settings-select" id="auto-clear">
-                    <option value="never" selected>Keep Completed Files</option>
-                    <option value="5s">Clear after 5s</option>
-                    <option value="immediately">Clear immediately</option>
-                </select>
-            </div>
         </div>
 
-        <!-- Dashboard Grid (Progress Queue, Streamer, & Local Storage History Log) -->
+        <!-- Dashboard Grid (Streamer & Combined Uploads Interface) -->
         <div class="dashboard-grid">
             
             <!-- Fileditch Link Streamer Panel -->
             <div class="glass-panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Fileditch Streamer</h3>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <h3 class="panel-title">Fileditch Streamer</h3>
+                        <button type="button" class="btn-history-action" id="streamer-info-btn" style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;" title="Streamer Info">ⓘ</button>
+                    </div>
                     <span style="font-size: 0.75rem; color: var(--text-purple);">stream your files via link</span>
                 </div>
                 <div class="streamer-container">
@@ -851,7 +905,7 @@
                             <iframe id="streamer-doc-viewer" class="streamer-doc" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
                         </div>
 
-                        <!-- UNSUPPORTED / ARCHIVE FALLBACK -->
+                        <!-- UNSUPPORTED / FALLBACK -->
                         <div id="renderer-fallback" style="display: none;" class="unsupported-preview">
                             <div class="unsupported-title" id="fallback-file-name">Unsupported Preview Format</div>
                             <div class="unsupported-desc">This file type cannot be previewed natively. Click below to download or open directly in your browser.</div>
@@ -861,35 +915,52 @@
                 </div>
             </div>
 
-            <!-- Upload queue dashboard card -->
+            <!-- Combined Uploads Interface Panel -->
             <div class="glass-panel">
-                <div class="panel-header">
-                    <h3 class="panel-title">Upload Queue</h3>
-                    <span id="queue-count" style="font-size: 0.75rem; color: var(--text-muted);">0 active</span>
+                <div class="panel-header" style="flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <h3 class="panel-title">Uploads</h3>
+                        <span id="queue-count" style="font-size: 0.75rem; color: var(--text-muted);">0 active</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                        <!-- Auto-Clear Queue setting dropdown moved here -->
+                        <div style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); padding: 0.25rem 0.5rem; border-radius: 4px;">
+                            <label class="settings-label" for="auto-clear" style="margin: 0; font-size: 0.6rem;">Auto-Clear</label>
+                            <select class="settings-select" id="auto-clear" style="width: auto; font-size: 0.75rem; cursor: pointer;">
+                                <option value="never" selected>Keep Completed</option>
+                                <option value="5s">Clear after 5s</option>
+                                <option value="immediately">Clear immediately</option>
+                            </select>
+                        </div>
+                        <button class="btn-clear-all" id="clear-history" style="font-size: 0.75rem;">Clear History</button>
+                    </div>
                 </div>
                 
-                <div id="queue-empty" class="empty-state">
-                    no uploads active O_O
+                <!-- Queue Section -->
+                <div id="queue-section" style="margin-bottom: 1.5rem;">
+                    <div class="settings-label" style="font-size: 0.65rem; margin-bottom: 0.5rem; color: var(--text-purple);">Active Queue</div>
+                    <div id="queue-empty" class="empty-state" style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
+                        no uploads active O_O
+                    </div>
+                    <div id="queue-list">
+                        <!-- Progress queue items render here -->
+                    </div>
                 </div>
 
-                <div id="queue-list">
-                    <!-- Progress queue items render here -->
-                </div>
-            </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem;">
 
-            <!-- Upload history log dashboard card -->
-            <div class="glass-panel">
-                <div class="panel-header">
-                    <h3 class="panel-title">Upload History</h3>
-                    <button class="btn-clear-all" id="clear-history">Clear History</button>
-                </div>
-                
-                <div id="history-empty" class="empty-state">
-                    nothing to see here >–<
-                </div>
-
-                <div class="history-list" id="history-list">
-                    <!-- History cards render here -->
+                <!-- History Section -->
+                <div id="history-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div class="settings-label" style="font-size: 0.65rem; color: var(--text-purple); margin: 0;">Upload History</div>
+                        <div style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; text-align: right;">Note: Delete is client-side only. Files remain active on server.</div>
+                    </div>
+                    <div id="history-empty" class="empty-state" style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
+                        nothing to see here >–<
+                    </div>
+                    <div class="history-list" id="history-list">
+                        <!-- History cards render here -->
+                    </div>
                 </div>
             </div>
 
@@ -903,7 +974,7 @@
     <footer>
         <div class="footer-nav">
             <a href="https://redretep.github.io" target="_blank">about me</a>
-            <a href="/faq" target="_blank">faq</a>
+            <a href="./faq.html">faq</a>
             <a href="/abuse" target="_blank">abuse</a>
             <a href="mailto:peterdbaltes@gmail.com" target="_blank">contact</a>
             <a href="https://github.com/redretep/fileditch" target="_blank">github</a>
@@ -1051,8 +1122,8 @@
                     const htmlText = await response.text();
                     streamerStatus.textContent = "Parsing stream URL and cleaning parameters...";
 
-                    // Match strings starting with thegumonmyshoe.me up until the closing quote or space
-                    const urlRegex = /(https:\/\/thegumonmyshoe\.me\/[^"\s>]+)/;
+                    // Match strings containing md5= up until the closing quote or space
+                    const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
                     const match = htmlText.match(urlRegex);
 
                     if (match && match[1]) {
@@ -1576,7 +1647,83 @@
                     }[tag] || tag)
                 );
             }
+
+            // Modal Overlay Event Listeners
+            const uploadMethodInfoBtn = document.getElementById('upload-method-info-btn');
+            const streamerInfoBtn = document.getElementById('streamer-info-btn');
+            const uploadMethodOverlay = document.getElementById('upload-method-overlay');
+            const streamerInfoOverlay = document.getElementById('streamer-info-overlay');
+            const closeUploadMethodOverlay = document.getElementById('close-upload-method-overlay');
+            const closeStreamerInfoOverlay = document.getElementById('close-streamer-info-overlay');
+
+            uploadMethodInfoBtn.addEventListener('click', () => {
+                uploadMethodOverlay.style.display = 'flex';
+            });
+            streamerInfoBtn.addEventListener('click', () => {
+                streamerInfoOverlay.style.display = 'flex';
+            });
+            closeUploadMethodOverlay.addEventListener('click', () => {
+                uploadMethodOverlay.style.display = 'none';
+            });
+            closeStreamerInfoOverlay.addEventListener('click', () => {
+                streamerInfoOverlay.style.display = 'none';
+            });
+
+            // Close overlays when clicking outside the content
+            window.addEventListener('click', (e) => {
+                if (e.target === uploadMethodOverlay) {
+                    uploadMethodOverlay.style.display = 'none';
+                }
+                if (e.target === streamerInfoOverlay) {
+                    streamerInfoOverlay.style.display = 'none';
+                }
+            });
         });
     </script>
+
+    <!-- Upload Methods Info Overlay -->
+    <div id="upload-method-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="panel-title">Upload Methods</h3>
+                <button class="btn-cancel" id="close-upload-method-overlay" style="font-size: 1.2rem;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Multipart Form-Data (Recommended)</strong>
+                    Standard browser-compatible file upload method. It encodes the file as form fields. This is the most reliable, compatible, and highly recommended method for all browsers.
+                </div>
+                <div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Raw Body Stream</strong>
+                    Sends the raw file payload directly in the HTTP request body (`application/octet-stream`) without any wrapper metadata. This matches direct `curl -T` behavior and is slightly faster for large files, but is less supported by legacy proxies.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Streamer Info Overlay -->
+    <div id="streamer-info-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="panel-title">Fileditch Streamer Info</h3>
+                <button class="btn-cancel" id="close-streamer-info-overlay" style="font-size: 1.2rem;">✕</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">How it works:</strong>
+                    Paste a Fileditch viewer link (e.g., `https://fileditchfiles.me/file.php?f=...`). The streamer fetches the HTML source of the page through a Worker proxy (`api.pidi.workers.dev`) to bypass browser CORS blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens), and loads the direct stream in the browser.
+                </div>
+                <div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Supported Filetypes for Streaming:</strong>
+                    <ul style="padding-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                        <li><strong>Audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
+                        <li><strong>Video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
+                        <li><strong>Image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
+                        <li><strong>Document:</strong> pdf, txt, log, json, md, csv</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

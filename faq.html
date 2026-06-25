@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileDitch — FAQ</title>
+    <meta name="description" content="FileDitch Frequently Asked Questions - Learn about upload limits, blocked extensions, and proxy settings.">
+    
+    <!-- Google Fonts Preconnect and Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0a090e;
+            --bg-secondary: #110f18;
+            --bg-card: rgba(17, 15, 24, 0.7);
+            --border-color: rgba(126, 115, 255, 0.1);
+            
+            --accent-purple: #7e73ff;
+            --accent-purple-glow: rgba(126, 115, 255, 0.15);
+            
+            --text-primary: #ffffff;
+            --text-muted: #625c75;
+            --text-purple: #7e73ff;
+            
+            --font-mono: 'DM Mono', monospace;
+            --font-header: 'Syne', sans-serif;
+            
+            --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            font-family: var(--font-mono);
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(126, 115, 255, 0.08) 0%, transparent 50%);
+        }
+
+        .app-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .brand-title {
+            font-family: var(--font-header);
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .brand-file { color: #ffffff; }
+        .brand-ditch {
+            color: var(--accent-purple);
+            text-shadow: 0 0 30px rgba(126, 115, 255, 0.4);
+        }
+
+        .brand-subtitle {
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            align-self: flex-start;
+            margin-bottom: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-purple);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform var(--transition-smooth);
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        .faq-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: border-color var(--transition-smooth);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(126, 115, 255, 0.25);
+        }
+
+        .faq-question {
+            font-family: var(--font-header);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .faq-question::before {
+            content: "Q:";
+            color: var(--text-purple);
+            font-weight: 800;
+        }
+
+        .faq-answer {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #b3aebf;
+            line-height: 1.6;
+            padding-left: 1.5rem;
+        }
+
+        .faq-answer strong {
+            color: var(--text-primary);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-purple);
+            margin-top: 0.5rem;
+            word-break: break-all;
+        }
+
+        footer {
+            width: 100%;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 0;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+        }
+
+        .footer-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color var(--transition-smooth);
+        }
+
+        .footer-nav a:hover {
+            color: var(--accent-purple);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Back Navigation Link -->
+        <a href="./index.html" class="back-link">← BACK TO HOME</a>
+
+        <!-- Header -->
+        <header>
+            <h1 class="brand-title"><span class="brand-file">FAQ</span><span class="brand-ditch">PAGE</span></h1>
+            <div class="brand-subtitle">Frequently Asked Questions</div>
+        </header>
+
+        <!-- FAQ Content Grid -->
+        <div class="faq-list">
+            
+            <div class="faq-item">
+                <div class="faq-question">What is FileDitch?</div>
+                <div class="faq-answer">
+                    FileDitch is a fast, anonymous, and minimal file hosting service. There are no registration pages, account setups, or usage payloads required. Simply drop your files and copy the generated link.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What are the file upload limits?</div>
+                <div class="faq-answer">
+                    You can upload files up to <strong>100 GB</strong> in size. Most file formats are supported.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Are there any banned file extensions?</div>
+                <div class="faq-answer">
+                    Yes. To prevent malware distribution, security-sensitive file formats are blocked. Executables, installer packages, scripts, and system configurations are rejected:
+                    <div class="code-block">Blocked: .php, .html, .htm, .js, .exe, .apk, .sh, .py, .bat, .cmd, .msi, .vbs, .scr, .cpl</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What is the "CORS Blocked" error and why does it happen?</div>
+                <div class="faq-answer">
+                    Cross-Origin Resource Sharing (CORS) is a browser security protocol. FileDitch distribution servers do not send CORS wildcard headers, which prevents client-side web apps from fetching files directly. 
+                    We resolve this by default using your specified worker proxy:
+                    <div class="code-block">Proxy: api.pidi.workers.dev</div>
+                    For files larger than 50MB, the proxy connection may reset or time out due to Cloudflare Worker execution limits. In these cases, it is highly recommended to use a <strong>CORS-unblocking browser extension</strong> to enable direct, high-speed streaming.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How long are my files hosted?</div>
+                <div class="faq-answer">
+                    Files are hosted permanently as long as they comply with our Terms of Service (no malware, spam, or copyright abuse) and remain active. Files that receive no download activity for extended periods may be cleaned up periodically.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is there an API available?</div>
+                <div class="faq-answer">
+                    Yes, FileDitch provides a clean programmatic upload interface. You can upload files using simple multipart POST requests:
+                    <div class="code-block">curl -F "file=@yourfile.mp3" https://new.fileditch.com/upload.php</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Navigation Footer -->
+    <footer>
+        <div class="footer-nav">
+            <a href="https://fileditch.com/api.html" target="_blank">API</a>
+            <a href="./faq.html">FAQ</a>
+            <a href="https://fileditch.com/abuse.html" target="_blank">Abuse</a>
+            <a href="https://fileditch.com/contact.html" target="_blank">Contact</a>
+            <a href="https://discord.gg/fileditch" target="_blank">Discord</a>
+        </div>
+    </footer>
+
+</body>
+</html>
