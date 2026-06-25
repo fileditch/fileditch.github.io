@@ -975,7 +975,7 @@
         <div class="footer-nav">
             <a href="https://redretep.github.io" target="_blank">about me</a>
             <a href="./faq.html">faq</a>
-            <a href="/api" target="_blank">api</a>
+            <a href="/abuse" target="_blank">abuse</a>
             <a href="mailto:peterdbaltes@gmail.com" target="_blank">contact</a>
             <a href="https://github.com/redretep/fileditch" target="_blank">github</a>
         </div>
@@ -1352,15 +1352,16 @@
 
                 // Render Copyable URL Area
                 if (responseDiv) {
+                    const shareUrl = convertToShareUrl(data.url);
                     responseDiv.style.display = 'flex';
                     responseDiv.innerHTML = `
-                        <input type="text" class="link-input" value="${data.url}" readonly id="input-url-${id}">
+                        <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
                         <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
                     `;
 
                     // Copy Action
                     document.getElementById(`copy-btn-${id}`).addEventListener('click', () => {
-                        copyToClipboard(data.url, `copy-btn-${id}`);
+                        copyToClipboard(shareUrl, `copy-btn-${id}`);
                     });
                 }
 
@@ -1463,12 +1464,13 @@
                         }
                     }
 
+                    const shareUrl = convertToShareUrl(item.url);
                     hCard.innerHTML = `
                         <div class="history-top">
                             <div class="history-title" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
                             <div class="history-actions">
-                                <button class="btn-history-action btn-copy-hist" data-url="${item.url}" id="hist-copy-${item.id}">Copy</button>
-                                <a href="${item.url}" target="_blank" class="btn-history-action" style="text-decoration:none;">Open</a>
+                                <button class="btn-history-action btn-copy-hist" data-url="${shareUrl}" id="hist-copy-${item.id}">Copy</button>
+                                <a href="${shareUrl}" target="_blank" class="btn-history-action" style="text-decoration:none;">Open</a>
                                 <button class="btn-history-action delete" data-id="${item.id}">Delete</button>
                             </div>
                         </div>
@@ -1483,7 +1485,7 @@
 
                     // Copy Action
                     document.getElementById(`hist-copy-${item.id}`).addEventListener('click', (e) => {
-                        copyToClipboard(item.url, `hist-copy-${item.id}`);
+                        copyToClipboard(shareUrl, `hist-copy-${item.id}`);
                     });
                 });
 
@@ -1648,6 +1650,27 @@
                 );
             }
 
+            // Utility: Convert Fileditch URL to custom share URL with double hash
+            function convertToShareUrl(url) {
+                if (!url) return url;
+                const match = url.match(/[\?&]f=([^&]+)/);
+                if (match && match[1]) {
+                    const filePath = match[1].replace(/^\/+/, '');
+                    let base = window.location.origin + window.location.pathname;
+                    return `${base}##${filePath}`;
+                }
+                return url;
+            }
+
+            // Utility: Extract file path from URL hash
+            function getFilePathFromHash() {
+                const href = window.location.href;
+                const hashIndex = href.indexOf('#');
+                if (hashIndex === -1) return null;
+                const rawHash = href.substring(hashIndex);
+                return rawHash.replace(/^#+/, '').replace(/^\/+/, '');
+            }
+
             // Modal Overlay Event Listeners
             const uploadMethodInfoBtn = document.getElementById('upload-method-info-btn');
             const streamerInfoBtn = document.getElementById('streamer-info-btn');
@@ -1678,6 +1701,31 @@
                     streamerInfoOverlay.style.display = 'none';
                 }
             });
+
+            // Check URL Hash on load to see if we need to auto-stream
+            function checkHashAndStream() {
+                const filePath = getFilePathFromHash();
+                if (filePath) {
+                    // Reconstruct standard Fileditch URL
+                    const fileditchUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                    streamerInput.value = fileditchUrl;
+                    
+                    // Trigger stream logic
+                    streamBtn.click();
+                    
+                    // Scroll to the streamer panel
+                    const streamerPanel = streamerInput.closest('.glass-panel');
+                    if (streamerPanel) {
+                        streamerPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }
+
+            // Listen to hashchange
+            window.addEventListener('hashchange', checkHashAndStream);
+
+            // Trigger on page load
+            checkHashAndStream();
         });
     </script>
 
