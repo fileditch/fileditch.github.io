@@ -203,61 +203,70 @@
 
     <div class="app-container">
         <!-- Back Navigation Link -->
-        <a href="./index.html" class="back-link">← BACK TO HOME</a>
+        <a href="./index.html" class="back-link">← back to home</a>
 
         <!-- Header -->
         <header>
             <h1 class="brand-title"><span class="brand-file">FAQ</span><span class="brand-ditch">PAGE</span></h1>
-            <div class="brand-subtitle">Frequently Asked Questions</div>
+            <div class="brand-subtitle">frequently asked questions</div>
         </header>
 
         <!-- FAQ Content Grid -->
         <div class="faq-list">
             
             <div class="faq-item">
-                <div class="faq-question">What is FileDitch?</div>
+                <div class="faq-question">what is fileditch?</div>
                 <div class="faq-answer">
-                    FileDitch is a fast, anonymous, and minimal file hosting service. There are no registration pages, account setups, or usage payloads required. Simply drop your files and copy the generated link.
+                    fileditch is a fast, anonymous, and minimal file hosting service. there are no registration pages, account setups, or usage payloads required. simply drop your files and copy the generated link.
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">What are the file upload limits?</div>
+                <div class="faq-question">what is the difference between permanent and temporary uploads?</div>
                 <div class="faq-answer">
-                    You can upload files up to <strong>100 GB</strong> in size. Most file formats are supported.
+                    permanent uploads (hosted via new.fileditch.com) remain active indefinitely, storage permitting. temporary uploads (hosted via temp.fileditch.com) are automatically deleted 72 hours after upload, which is ideal for quick, one-off transfers.
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">Are there any banned file extensions?</div>
+                <div class="faq-question">what are the file upload limits?</div>
                 <div class="faq-answer">
-                    Yes. To prevent malware distribution, security-sensitive file formats are blocked. Executables, installer packages, scripts, and system configurations are rejected:
-                    <div class="code-block">Blocked: .php, .html, .htm, .js, .exe, .apk, .sh, .py, .bat, .cmd, .msi, .vbs, .scr, .cpl</div>
+                    you can upload files up to <strong>100 gb</strong> in size. most file formats are supported.
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">What is the "CORS Blocked" error and why does it happen?</div>
+                <div class="faq-question">are there any banned file extensions?</div>
                 <div class="faq-answer">
-                    Cross-Origin Resource Sharing (CORS) is a browser security protocol. FileDitch distribution servers do not send CORS wildcard headers, which prevents client-side web apps from fetching files directly. 
-                    We resolve this by default using your specified worker proxy:
-                    <div class="code-block">Proxy: api.pidi.workers.dev</div>
-                    For files larger than 50MB, the proxy connection may reset or time out due to Cloudflare Worker execution limits. In these cases, it is highly recommended to use a <strong>CORS-unblocking browser extension</strong> to enable direct, high-speed streaming.
+                    yes. to prevent malware distribution, security-sensitive file formats are blocked. executables, installer packages, scripts, and system configurations are rejected:
+                    <div class="code-block">blocked: .php, .html, .htm, .js, .exe, .apk, .sh, .py, .bat, .cmd, .msi, .vbs, .scr, .cpl</div>
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">How long are my files hosted?</div>
+                <div class="faq-question">what is the "cors blocked" error and why does it happen?</div>
                 <div class="faq-answer">
-                    Files are hosted permanently as long as they comply with our Terms of Service (no malware, spam, or copyright abuse) and remain active. Files that receive no download activity for extended periods may be cleaned up periodically.
+                    cross-origin resource sharing (cors) is a browser security protocol. fileditch distribution servers do not send cors wildcard headers, which prevents client-side web apps from fetching files directly. 
+                    we resolve this by default using your specified worker proxy:
+                    <div class="code-block">proxy: api.pidi.workers.dev</div>
+                    for files larger than 50mb, the proxy connection may reset or time out due to cloudflare worker execution limits. in these cases, it is highly recommended to use a <strong>cors-unblocking browser extension</strong> to enable direct, high-speed streaming.
                 </div>
             </div>
 
             <div class="faq-item">
-                <div class="faq-question">Is there an API available?</div>
+                <div class="faq-question">how long are my files hosted?</div>
                 <div class="faq-answer">
-                    Yes, FileDitch provides a clean programmatic upload interface. You can upload files using simple multipart POST requests:
+                    files uploaded to our permanent servers remain hosted indefinitely as long as they comply with our terms of service (no malware, spam, or copyright abuse) and receive download activity. files uploaded via the temporary api are auto-deleted after 72 hours.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">is there an api available?</div>
+                <div class="faq-answer">
+                    yes, fileditch provides programmatic upload endpoints. you can upload files using simple multipart POST requests:
                     <div class="code-block">curl -F "file=@yourfile.mp3" https://new.fileditch.com/upload.php</div>
+                    for temporary uploads, simply route the requests to:
+                    <div class="code-block">curl -F "file=@yourfile.mp3" https://temp.fileditch.com/upload.php</div>
                 </div>
             </div>
 
@@ -267,11 +276,11 @@
     <!-- Navigation Footer -->
     <footer>
         <div class="footer-nav">
-            <a href="https://fileditch.com/api.html" target="_blank">API</a>
-            <a href="./faq.html">FAQ</a>
-            <a href="https://fileditch.com/abuse.html" target="_blank">Abuse</a>
-            <a href="https://fileditch.com/contact.html" target="_blank">Contact</a>
-            <a href="https://discord.gg/fileditch" target="_blank">Discord</a>
+            <a href="https://fileditch.com/api.html" target="_blank">api</a>
+            <a href="./faq.html">faq</a>
+            <a href="https://fileditch.com/abuse.html" target="_blank">abuse</a>
+            <a href="https://fileditch.com/contact.html" target="_blank">contact</a>
+            <a href="https://discord.gg/fileditch" target="_blank">discord</a>
         </div>
     </footer>
 

@@ -871,16 +871,16 @@
 
     <div class="app-container">
         <!-- Floating Update Log Button -->
-        <button type="button" class="btn-update-log" id="update-log-btn">Update Log</button>
+        <button type="button" class="btn-update-log" id="update-log-btn">update log</button>
 
         <!-- Brand Header Section -->
         <header>
             <h1 class="brand-title"><span class="brand-file">FILE</span><span class="brand-ditch">DITCH</span></h1>
-            <div class="brand-subtitle">Fast Anonymous File Hosting</div>
+            <div class="brand-subtitle">fast anonymous file hosting</div>
             <div class="badges-container">
-                <span class="badge">Max 100 GB</span>
-                <span class="badge">Most File Types</span>
-                <span class="badge">No Account Needed</span>
+                <span class="badge">max 100 gb</span>
+                <span class="badge">most file types</span>
+                <span class="badge">no account needed</span>
             </div>
         </header>
 
@@ -890,7 +890,7 @@
                 <input type="file" id="file-input" multiple>
                 <input type="file" id="folder-input" webkitdirectory="" directory="" multiple style="display: none;">
                 <div class="dropzone-arrow">↑</div>
-                <h2 class="dropzone-title">Drop files here</h2>
+                <h2 class="dropzone-title">drop files here</h2>
                 <div class="dropzone-desc" style="margin-bottom: 1.25rem;">or click to browse files (max. 100gb)</div>
                 <label for="folder-input" class="btn-copy" id="btn-browse-folder"
                     style="font-size: 0.75rem; height: 32px; padding: 0 1rem; position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; gap: 0.3rem; margin: 0 auto; text-decoration: none; user-select: none;">
@@ -899,18 +899,27 @@
             </div>
         </div>
 
-        <!-- Settings block to customize raw/multipart upload methods -->
-        <div class="settings-panel" style="grid-template-columns: 1fr; max-width: 680px;">
+        <!-- Settings block to customize upload parameters -->
+        <div class="settings-panel" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 680px; width: 100%;">
             <div class="settings-group" style="position: relative;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <label class="settings-label" for="upload-method">Upload Method</label>
+                    <label class="settings-label" for="upload-method">upload method</label>
                     <button type="button" class="btn-history-action" id="upload-method-info-btn"
                         style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;"
-                        title="Upload Methods Info">ⓘ</button>
+                        title="upload methods info">ⓘ</button>
                 </div>
                 <select class="settings-select" id="upload-method">
-                    <option value="multipart" selected>Multipart Form-Data (Recommended)</option>
-                    <option value="raw">Raw Body Stream (Fast)</option>
+                    <option value="multipart" selected>multipart form-data (recommended)</option>
+                    <option value="raw">raw body stream (fast)</option>
+                </select>
+            </div>
+            <div class="settings-group" style="position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <label class="settings-label" for="upload-retention">retention policy</label>
+                </div>
+                <select class="settings-select" id="upload-retention">
+                    <option value="permanent" selected>permanent (new.fileditch.com)</option>
+                    <option value="temporary">temporary (72h - temp.fileditch.com)</option>
                 </select>
             </div>
         </div>
@@ -973,8 +982,8 @@
                             <div class="unsupported-desc">this file type cannot be previewed. click below to download or
                                 open directly in your browser.</div>
                             <a id="fallback-external-link" href="#" target="_blank" class="btn-streamer"
-                                style="text-decoration: none; display: inline-block; width: auto; padding: 0.6rem 1.2rem;">Open
-                                File Directly</a>
+                                style="text-decoration: none; display: inline-block; width: auto; padding: 0.6rem 1.2rem;">open
+                                file directly</a>
                         </div>
 
                         <!-- FOLDER RENDERER -->
@@ -985,7 +994,7 @@
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                                     <span style="font-size: 1.2rem;">📁</span>
                                     <strong id="folder-name-display"
-                                        style="font-size: 1rem; color: var(--text-primary);">Folder Name</strong>
+                                        style="font-size: 1rem; color: var(--text-primary);">folder name</strong>
                                     <span id="folder-files-count"
                                         style="font-size: 0.75rem; color: var(--text-muted);">0 files</span>
                                 </div>
@@ -1000,7 +1009,7 @@
                                 style="display: none; margin-bottom: 1rem; background: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.03);">
                                 <div
                                     style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
-                                    <span id="folder-zip-status" style="color: var(--accent-purple);">Compiling
+                                    <span id="folder-zip-status" style="color: var(--accent-purple);">compiling
                                         files...</span>
                                     <span id="folder-zip-percent">0%</span>
                                 </div>
@@ -1023,7 +1032,7 @@
             <div class="glass-panel">
                 <div class="panel-header" style="flex-wrap: wrap; gap: 0.5rem;">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <h3 class="panel-title">Uploads</h3>
+                        <h3 class="panel-title">uploads</h3>
                         <span id="queue-count" style="font-size: 0.75rem; color: var(--text-muted);">0 active</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
@@ -1031,23 +1040,23 @@
                         <div
                             style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); padding: 0.25rem 0.5rem; border-radius: 4px;">
                             <label class="settings-label" for="auto-clear"
-                                style="margin: 0; font-size: 0.6rem;">Auto-Clear</label>
+                                style="margin: 0; font-size: 0.6rem;">auto-clear</label>
                             <select class="settings-select" id="auto-clear"
                                 style="width: auto; font-size: 0.75rem; cursor: pointer;">
-                                <option value="never" selected>Keep Completed</option>
-                                <option value="5s">Clear after 5s</option>
-                                <option value="immediately">Clear immediately</option>
+                                <option value="never" selected>keep completed</option>
+                                <option value="5s">clear after 5s</option>
+                                <option value="immediately">clear immediately</option>
                             </select>
                         </div>
-                        <button class="btn-clear-all" id="clear-history" style="font-size: 0.75rem;">Clear
-                            History</button>
+                        <button class="btn-clear-all" id="clear-history" style="font-size: 0.75rem;">clear
+                            history</button>
                     </div>
                 </div>
 
                 <!-- Queue Section -->
                 <div id="queue-section" style="margin-bottom: 1.5rem;">
                     <div class="settings-label"
-                        style="font-size: 0.65rem; margin-bottom: 0.5rem; color: var(--text-purple);">Active Queue</div>
+                        style="font-size: 0.65rem; margin-bottom: 0.5rem; color: var(--text-purple);">active queue</div>
                     <div id="queue-empty" class="empty-state"
                         style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
                         no uploads active O_O
@@ -1064,10 +1073,10 @@
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
                         <div class="settings-label" style="font-size: 0.65rem; color: var(--text-purple); margin: 0;">
-                            Upload History</div>
+                            upload history</div>
                         <div
                             style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; text-align: right;">
-                            Note: Delete is client-side only. Files remain active on server.</div>
+                            note: delete is client-side only. files remain active on server.</div>
                     </div>
                     <div id="history-empty" class="empty-state"
                         style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
@@ -1103,6 +1112,7 @@
                 const folderInput = document.getElementById('folder-input');
                 const btnBrowseFolder = document.getElementById('btn-browse-folder');
                 const uploadMethodSelect = document.getElementById('upload-method');
+                const uploadRetentionSelect = document.getElementById('upload-retention');
                 const autoClearSelect = document.getElementById('auto-clear');
 
                 const queueList = document.getElementById('queue-list');
@@ -1217,11 +1227,11 @@
                 clearHistoryBtn.addEventListener('click', () => {
                     if (history.length === 0) return;
 
-                    if (confirm('Clear your local history? This will only clear your history log, your uploaded files remain active.')) {
+                    if (confirm('clear your local history? this will only clear your history log, your uploaded files remain active.')) {
                         history = [];
                         localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
                         renderHistory();
-                        showToast('History log cleared successfully', 'success');
+                        showToast('history log cleared successfully', 'success');
                     }
                 });
 
@@ -1303,26 +1313,26 @@
 
                             // Check if it's a folder manifest
                             if (fileExt === 'fileditch') {
-                                streamerStatus.textContent = "Loading folder structure...";
+                                streamerStatus.textContent = "loading folder structure...";
                                 const manifestProxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(streamUrl)}`;
                                 const manifestResponse = await fetch(manifestProxyUrl);
                                 if (!manifestResponse.ok) {
-                                    throw new Error(`Failed to load folder manifest (Status: ${manifestResponse.status})`);
+                                    throw new Error(`failed to load folder manifest (status: ${manifestResponse.status})`);
                                 }
                                 const folderManifest = await manifestResponse.json();
                                 renderFolderPreview(folderManifest);
                                 streamerStatus.style.display = 'none';
-                                showToast("Folder manifest loaded successfully!", "success");
+                                showToast("folder manifest loaded successfully!", "success");
                             }
                             else if (fileType === 'audio') {
                                 rendererAudio.style.display = 'block';
                                 streamerAudioPlayer.src = streamUrl;
-                                streamerAudioPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
+                                streamerAudioPlayer.play().catch(e => console.log("autoplay blocked. press play manually."));
                             }
                             else if (fileType === 'video') {
                                 rendererVideo.style.display = 'block';
                                 streamerVideoPlayer.src = streamUrl;
-                                streamerVideoPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
+                                streamerVideoPlayer.play().catch(e => console.log("autoplay blocked. press play manually."));
                             }
                             else if (fileType === 'image') {
                                 rendererImage.style.display = 'block';
@@ -1330,7 +1340,7 @@
                             }
                             else if (fileType === 'document') {
                                 rendererDocument.style.display = 'block';
-                                docTitleDisplay.textContent = fileName || "Document View";
+                                docTitleDisplay.textContent = fileName || "document view";
                                 docExternalLink.href = streamUrl;
                                 streamerDocViewer.src = streamUrl;
                             }
@@ -1482,15 +1492,16 @@
                     };
 
                     // Trigger upload
+                    const uploadHost = uploadRetentionSelect.value === 'temporary' ? 'temp.fileditch.com' : 'new.fileditch.com';
                     if (uploadMethod === 'raw') {
-                        const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
+                        const uploadUrl = `https://${uploadHost}/upload.php?filename=${encodeURIComponent(file.name)}`;
                         xhr.open('POST', uploadUrl, true);
                         xhr.setRequestHeader('Content-Type', 'application/octet-stream');
                         xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
                         xhr.send(file);
                     } else {
                         // Multipart Form-Data
-                        const uploadUrl = 'https://new.fileditch.com/upload.php';
+                        const uploadUrl = `https://${uploadHost}/upload.php`;
                         const formData = new FormData();
                         formData.append('file', file);
                         xhr.open('POST', uploadUrl, true);
@@ -1649,14 +1660,15 @@
                             reject(new Error('Network error or CORS restriction.'));
                         };
 
+                        const uploadHost = uploadRetentionSelect.value === 'temporary' ? 'temp.fileditch.com' : 'new.fileditch.com';
                         if (uploadMethod === 'raw') {
-                            const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
+                            const uploadUrl = `https://${uploadHost}/upload.php?filename=${encodeURIComponent(file.name)}`;
                             xhr.open('POST', uploadUrl, true);
                             xhr.setRequestHeader('Content-Type', 'application/octet-stream');
                             xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
                             xhr.send(file);
                         } else {
-                            const uploadUrl = 'https://new.fileditch.com/upload.php';
+                            const uploadUrl = `https://${uploadHost}/upload.php`;
                             const formData = new FormData();
                             formData.append('file', file);
                             xhr.open('POST', uploadUrl, true);
@@ -2382,52 +2394,52 @@
         <div id="upload-method-overlay" class="modal-overlay" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="panel-title">Upload Methods</h3>
+                    <h3 class="panel-title">upload methods</h3>
                     <button class="btn-cancel" id="close-upload-method-overlay" style="font-size: 1.2rem;">✕</button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Multipart
-                            Form-Data (Recommended)</strong>
-                        Standard browser-compatible file upload method. It encodes the file as form fields. This is the
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">multipart
+                            form-data (recommended)</strong>
+                        standard browser-compatible file upload method. it encodes the file as form fields. this is the
                         most reliable, compatible, and highly recommended method for all browsers.
                     </div>
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Raw Body
-                            Stream</strong>
-                        Sends the raw file payload directly in the HTTP request body (`application/octet-stream`)
-                        without any wrapper metadata. This matches direct `curl -T` behavior and is slightly faster for
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">raw body
+                            stream</strong>
+                        sends the raw file payload directly in the http request body (`application/octet-stream`)
+                        without any wrapper metadata. this matches direct `curl -T` behavior and is slightly faster for
                         large files, but is less supported by legacy proxies.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Streamer Info Overlay -->
+        <!-- File Viewer Info Overlay -->
         <div id="streamer-info-overlay" class="modal-overlay" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="panel-title">File Viewer Info</h3>
+                    <h3 class="panel-title">file viewer info</h3>
                     <button class="btn-cancel" id="close-streamer-info-overlay" style="font-size: 1.2rem;">✕</button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">How it
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">how it
                             works:</strong>
-                        Paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>).
-                        The viewer fetches the HTML source of the page through a Worker proxy to bypass browser CORS
+                        paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>).
+                        the viewer fetches the html source of the page through a worker proxy to bypass browser cors
                         blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens),
                         and loads the file directly in the browser.
                     </div>
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Supported
-                            Filetypes for viewing:</strong>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">supported
+                            filetypes for viewing:</strong>
                         <ul
                             style="padding-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                            <li><strong>Audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
-                            <li><strong>Video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
-                            <li><strong>Image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
-                            <li><strong>Document:</strong> pdf, txt, log, json, md, csv</li>
+                            <li><strong>audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
+                            <li><strong>video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
+                            <li><strong>image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
+                            <li><strong>document:</strong> pdf, txt, log, json, md, csv</li>
                         </ul>
                     </div>
                 </div>
@@ -2438,7 +2450,7 @@
         <div id="update-log-overlay" class="modal-overlay" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="panel-title">Update Log</h3>
+                    <h3 class="panel-title">update log</h3>
                     <button class="btn-cancel" id="close-update-log-overlay" style="font-size: 1.2rem;">✕</button>
                 </div>
                 <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
@@ -2446,72 +2458,71 @@
                         style="border-left: 2px solid var(--accent-purple); padding-left: 0.75rem; margin-bottom: 1.25rem;">
                         <div
                             style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">
-                            July 06, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Folder
-                            Uploads & Client-side ZIP Compilation (.fileditch format)</strong>
+                            july 06, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">temporal uploads (temp.fileditch.com) & folder uploads</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>Added support for full folder uploading, recursively transmitting files.</li>
-                            <li>Compiles metadata into a custom <code>.fileditch</code> manifest format.</li>
-                            <li>Added folder tree explorer displaying directory structures for shared folder links.</li>
-                            <li>Added client-side ZIP packaging via JSZip to download whole folders directly.</li>
+                            <li>added retention policy switcher to toggle between permanent and temporary 72-hour hosting.</li>
+                            <li>updated file and folder upload pipelines to hit temp.fileditch.com dynamically.</li>
+                            <li>converted all mixed-case frontend labels, descriptions, and button texts to lowercase.</li>
+                            <li>added support for recursive folder uploads and client-side ZIP compilation via .fileditch manifests.</li>
                         </ul>
                     </div>
                     <div
                         style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
                         <div
                             style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
-                            June 25, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Custom
-                            Double-Hash sharing links & ad-free streaming</strong>
+                            june 25, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">custom
+                            double-hash sharing links & ad-free streaming</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>Files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>)
-                                instead of standard FileDitch page links.</li>
-                            <li>Shared hash links automatically load and play in the ad-free, tracker-free media player.
+                            <li>files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>)
+                                instead of standard fileditch page links.</li>
+                            <li>shared hash links automatically load and play in the ad-free, tracker-free media player.
                             </li>
-                            <li>Cleaned up all <code>fileditchfiles.me</code> domain references from the frontend.</li>
+                            <li>cleaned up all <code>fileditchfiles.me</code> domain references from the frontend.</li>
                         </ul>
                     </div>
                     <div
                         style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
                         <div
                             style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
-                            June 24, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Consolidated
-                            Uploads Interface & Info Overlays</strong>
+                            june 24, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">consolidated
+                            uploads interface & info overlays</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>Merged Active Queue and Upload History into a single unified "Uploads Interface" panel.
+                            <li>merged active queue and upload history into a single unified "uploads interface" panel.
                             </li>
-                            <li>Relocated the Auto-Clear Queue configuration directly into the uploads header.</li>
-                            <li>Added interactive explanation modals for Upload Methods and File Viewer.</li>
-                            <li>Added a policy warning indicating file deletes are client-side only.</li>
+                            <li>relocated the auto-clear queue configuration directly into the uploads header.</li>
+                            <li>added interactive explanation modals for upload methods and file viewer.</li>
+                            <li>added a policy warning indicating file deletes are client-side only.</li>
                         </ul>
                     </div>
                     <div
                         style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
                         <div
                             style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
-                            June 23, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">ZIP
-                            Streaming Deprecated</strong>
+                            june 23, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">zip
+                            streaming deprecated</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>Removed JSZip and unzipit range-request streaming libraries.</li>
-                            <li>Removed all ZIP-related code references from the main panel and FAQ list.</li>
+                            <li>removed jszip and unzipit range-request streaming libraries.</li>
+                            <li>removed all zip-related code references from the main panel and faq list.</li>
                         </ul>
                     </div>
                     <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem;">
                         <div
                             style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
-                            June 20, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Initial
-                            Launch</strong>
+                            june 20, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">initial
+                            launch</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>Dark mode obsidian theme with monospace typography.</li>
-                            <li>Multipart and Raw upload support with instant media previews.</li>
+                            <li>dark mode obsidian theme with monospace typography.</li>
+                            <li>multipart and raw upload support with instant media previews.</li>
                         </ul>
                     </div>
                 </div>
