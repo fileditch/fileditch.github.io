@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap');
@@ -867,9 +868,13 @@
         <div class="dropzone-wrapper">
             <div class="dropzone-container" id="dropzone">
                 <input type="file" id="file-input" multiple>
+                <input type="file" id="folder-input" webkitdirectory="" directory="" multiple style="display: none;">
                 <div class="dropzone-arrow">↑</div>
                 <h2 class="dropzone-title">Drop files here</h2>
-                <div class="dropzone-desc">or click to browse (max. 100gb)</div>
+                <div class="dropzone-desc" style="margin-bottom: 1.25rem;">or click to browse files (max. 100gb)</div>
+                <label for="folder-input" class="btn-copy" id="btn-browse-folder" style="font-size: 0.75rem; height: 32px; padding: 0 1rem; position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; gap: 0.3rem; margin: 0 auto; text-decoration: none; user-select: none;">
+                    📁 Select Folder
+                </label>
             </div>
         </div>
 
@@ -939,6 +944,35 @@
                             <div class="unsupported-title" id="fallback-file-name">Unsupported Preview Format</div>
                             <div class="unsupported-desc">This file type cannot be previewed natively. Click below to download or open directly in your browser.</div>
                             <a id="fallback-external-link" href="#" target="_blank" class="btn-streamer" style="text-decoration: none; display: inline-block; width: auto; padding: 0.6rem 1.2rem;">Open File Directly</a>
+                        </div>
+
+                        <!-- FOLDER RENDERER -->
+                        <div id="renderer-folder" style="display: none; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 1rem; width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="font-size: 1.2rem;">📁</span>
+                                    <strong id="folder-name-display" style="font-size: 1rem; color: var(--text-primary);">Folder Name</strong>
+                                    <span id="folder-files-count" style="font-size: 0.75rem; color: var(--text-muted);">0 files</span>
+                                </div>
+                                <button class="btn-copy" id="btn-download-folder-zip" style="font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem; height: 32px; padding: 0 0.8rem;">
+                                    <span>📦</span> Download as ZIP
+                                </button>
+                            </div>
+                            
+                            <!-- Folder ZIP progress -->
+                            <div id="folder-zip-progress-wrapper" style="display: none; margin-bottom: 1rem; background: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.03);">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
+                                    <span id="folder-zip-status" style="color: var(--accent-purple);">Compiling files...</span>
+                                    <span id="folder-zip-percent">0%</span>
+                                </div>
+                                <div class="progress-bar-bg" style="height: 4px; background: rgba(255,255,255,0.05);">
+                                    <div class="progress-bar-fill" id="folder-zip-progress-bar" style="width: 0%; background: var(--accent-purple);"></div>
+                                </div>
+                            </div>
+
+                            <div style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;" id="folder-contents-list">
+                                <!-- list of files will render here -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1015,6 +1049,8 @@
             // DOM Elements
             const dropzone = document.getElementById('dropzone');
             const fileInput = document.getElementById('file-input');
+            const folderInput = document.getElementById('folder-input');
+            const btnBrowseFolder = document.getElementById('btn-browse-folder');
             const uploadMethodSelect = document.getElementById('upload-method');
             const autoClearSelect = document.getElementById('auto-clear');
             
@@ -1054,12 +1090,19 @@
             const fallbackFileName = document.getElementById('fallback-file-name');
             const fallbackExternalLink = document.getElementById('fallback-external-link');
 
+            const rendererFolder = document.getElementById('renderer-folder');
+            const folderNameDisplay = document.getElementById('folder-name-display');
+            const folderFilesCount = document.getElementById('folder-files-count');
+            const folderContentsList = document.getElementById('folder-contents-list');
+            const btnDownloadFolderZip = document.getElementById('btn-download-folder-zip');
+
             // Local Storage Key
             const HISTORY_KEY = 'fileditch_upload_history';
 
             // State Variables
             let activeUploadsCount = 0;
             let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+            let currentFolderManifest = null;
 
             // Banned extensions list from FileDitch API
             const BLOCKED_EXTENSIONS = ['php', 'html', 'htm', 'js', 'exe', 'apk', 'sh', 'py', 'bat', 'cmd', 'msi', 'vbs', 'scr', 'cpl'];
@@ -1069,13 +1112,32 @@
             renderHistory();
 
             // Event Listeners for Browse
-            dropzone.addEventListener('click', () => {
+            dropzone.addEventListener('click', (e) => {
+                if (e.target.closest('#btn-browse-folder') || e.target.closest('input[type="file"]')) {
+                    return;
+                }
                 fileInput.click();
+            });
+
+            btnBrowseFolder.addEventListener('click', (e) => {
+                e.stopPropagation();
             });
 
             fileInput.addEventListener('change', (e) => {
                 handleFiles(e.target.files);
                 fileInput.value = ''; // Reset
+            });
+
+            folderInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                    let folderName = 'Folder';
+                    if (files[0].webkitRelativePath) {
+                        folderName = files[0].webkitRelativePath.split('/')[0];
+                    }
+                    uploadFolder(files, folderName);
+                }
+                folderInput.value = ''; // Reset
             });
 
             // Drag & Drop event bindings
@@ -1188,7 +1250,20 @@
                         streamerStatus.textContent = `Resolving media preview [${fileType.toUpperCase()}]...`;
                         streamerPlayerContainer.style.display = 'flex';
 
-                        if (fileType === 'audio') {
+                        // Check if it's a folder manifest
+                        if (fileExt === 'fileditch') {
+                            streamerStatus.textContent = "Loading folder structure...";
+                            const manifestProxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(streamUrl)}`;
+                            const manifestResponse = await fetch(manifestProxyUrl);
+                            if (!manifestResponse.ok) {
+                                throw new Error(`Failed to load folder manifest (Status: ${manifestResponse.status})`);
+                            }
+                            const folderManifest = await manifestResponse.json();
+                            renderFolderPreview(folderManifest);
+                            streamerStatus.style.display = 'none';
+                            showToast("Folder manifest loaded successfully!", "success");
+                        }
+                        else if (fileType === 'audio') {
                             rendererAudio.style.display = 'block';
                             streamerAudioPlayer.src = streamUrl;
                             streamerAudioPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
@@ -1471,6 +1546,304 @@
                 }
 
                 showToast(`Failed uploading "${file.name}": ${errorMsg}`, 'error');
+            }
+
+            // Folder Uploader Helper functions
+            function performSingleXhrUpload(file, onProgress, onXhrCreated) {
+                return new Promise((resolve, reject) => {
+                    const uploadMethod = uploadMethodSelect.value;
+                    const xhr = new XMLHttpRequest();
+                    if (onXhrCreated) onXhrCreated(xhr);
+
+                    let startTime = Date.now();
+
+                    xhr.upload.addEventListener('progress', (e) => {
+                        if (e.lengthComputable) {
+                            const percent = Math.round((e.loaded / e.total) * 100);
+                            let speedText = 'Calculating...';
+                            const now = Date.now();
+                            const duration = (now - startTime) / 1000;
+                            if (duration > 0.5) {
+                                const speed = e.loaded / duration;
+                                const remainingBytes = e.total - e.loaded;
+                                const eta = speed > 0 ? Math.round(remainingBytes / speed) : 0;
+                                speedText = `${formatBytes(speed)}/s · ${formatTime(eta)} remaining`;
+                            }
+                            onProgress(percent, speedText);
+                        }
+                    });
+
+                    xhr.onload = () => {
+                        let responseData;
+                        try {
+                            responseData = JSON.parse(xhr.responseText);
+                        } catch (e) {
+                            responseData = { error: 'Invalid response from server' };
+                        }
+
+                        if (xhr.status >= 200 && xhr.status < 300 && responseData.success) {
+                            resolve(responseData);
+                        } else {
+                            let errorMsg = responseData.error || 'Server error';
+                            if (xhr.status === 403) {
+                                errorMsg = 'Blocked file extension';
+                            } else if (xhr.status === 413) {
+                                errorMsg = 'File exceeds the server limit';
+                            }
+                            reject(new Error(errorMsg));
+                        }
+                    };
+
+                    xhr.onerror = () => {
+                        reject(new Error('Network error or CORS restriction.'));
+                    };
+
+                    if (uploadMethod === 'raw') {
+                        const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
+                        xhr.open('POST', uploadUrl, true);
+                        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                        xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
+                        xhr.send(file);
+                    } else {
+                        const uploadUrl = 'https://new.fileditch.com/upload.php';
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        xhr.open('POST', uploadUrl, true);
+                        xhr.send(formData);
+                    }
+                });
+            }
+
+            async function uploadFolder(files, folderName) {
+                const id = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
+                // Update state
+                activeUploadsCount++;
+                updateQueueState();
+
+                const totalFiles = files.length;
+
+                // Create master progress card matching the styling
+                const card = document.createElement('div');
+                card.className = 'upload-card';
+                card.id = id;
+                card.innerHTML = `
+                    <div class="card-top">
+                        <div class="file-info">
+                            <div class="file-name" title="Folder: ${escapeHtml(folderName)}">📂 ${escapeHtml(folderName)}</div>
+                            <div class="file-size-status">
+                                <span id="folder-status-${id}">Uploading 0/${totalFiles} files</span>
+                                <span class="status-indicator uploading" id="badge-${id}">Uploading</span>
+                            </div>
+                        </div>
+                        <button class="btn-cancel" id="cancel-${id}" title="Cancel Folder Upload">✕</button>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="bar-${id}"></div>
+                    </div>
+                    <div class="progress-meta">
+                        <span id="percent-${id}">0%</span>
+                        <span id="speed-${id}">Preparing folder uploads...</span>
+                    </div>
+                    <div class="link-output-wrapper" id="response-${id}" style="display: none;"></div>
+                `;
+                queueList.appendChild(card);
+
+                let currentXhr = null;
+                let cancelled = false;
+
+                // Cancel button listener
+                document.getElementById(`cancel-${id}`).addEventListener('click', () => {
+                    cancelled = true;
+                    if (currentXhr) {
+                        currentXhr.abort();
+                    }
+                    card.remove();
+                    activeUploadsCount--;
+                    updateQueueState();
+                    showToast(`Cancelled upload of folder "${folderName}"`, 'info');
+                });
+
+                const fileMappings = [];
+                let totalBytesUploaded = 0;
+                let folderTotalSize = 0;
+                
+                // Filter out empty files or blocked extensions first
+                const validFiles = Array.from(files).filter(file => {
+                    folderTotalSize += file.size;
+                    const ext = getFileExtension(file.name);
+                    return !BLOCKED_EXTENSIONS.includes(ext) && file.size <= MAX_FILE_SIZE;
+                });
+
+                if (validFiles.length === 0) {
+                    activeUploadsCount--;
+                    updateQueueState();
+                    card.remove();
+                    showToast("No valid files in folder to upload.", "error");
+                    return;
+                }
+
+                try {
+                    for (let i = 0; i < validFiles.length; i++) {
+                        if (cancelled) return;
+                        const file = validFiles[i];
+
+                        // Update Status
+                        document.getElementById(`folder-status-${id}`).innerText = `Uploading ${i + 1}/${validFiles.length} files`;
+
+                        const responseData = await performSingleXhrUpload(file, (percent, speedText) => {
+                            // Calculate current progress
+                            const fileProgressBytes = (percent / 100) * file.size;
+                            const overallUploadedBytes = totalBytesUploaded + fileProgressBytes;
+                            const overallPercent = Math.min(99, Math.round((overallUploadedBytes / folderTotalSize) * 99));
+
+                            const bar = document.getElementById(`bar-${id}`);
+                            const percentText = document.getElementById(`percent-${id}`);
+                            const speedTextContainer = document.getElementById(`speed-${id}`);
+
+                            if (bar) bar.style.width = `${overallPercent}%`;
+                            if (percentText) percentText.innerText = `${overallPercent}%`;
+                            if (speedTextContainer) {
+                                speedTextContainer.innerText = `File ${i + 1}/${validFiles.length} · ${speedText}`;
+                            }
+                        }, (xhr) => {
+                            currentXhr = xhr;
+                        });
+
+                        totalBytesUploaded += file.size;
+
+                        // Save file metadata containing its relative path (or just name if webkitRelativePath is empty)
+                        fileMappings.push({
+                            path: file.webkitRelativePath || file.name,
+                            url: responseData.url,
+                            size: file.size
+                        });
+                    }
+
+                    if (cancelled) return;
+
+                    // All folder files uploaded, create .fileditch manifest
+                    document.getElementById(`folder-status-${id}`).innerText = `Finalizing folder...`;
+                    const speedTextContainer = document.getElementById(`speed-${id}`);
+                    if (speedTextContainer) speedTextContainer.innerText = `Uploading folder metadata (.fileditch)...`;
+
+                    const metadata = {
+                        type: "folder",
+                        name: folderName,
+                        files: fileMappings
+                    };
+                    const metadataString = JSON.stringify(metadata, null, 2);
+                    const blob = new Blob([metadataString], { type: 'application/json' });
+                    const metadataFile = new File([blob], `${folderName}.fileditch`, { type: 'application/json' });
+
+                    // Upload the .fileditch manifest
+                    const responseData = await performSingleXhrUpload(metadataFile, (percent, speedText) => {
+                        // Metadata upload progress
+                        const percentText = document.getElementById(`percent-${id}`);
+                        if (percentText) percentText.innerText = `${percent}%`;
+                        const bar = document.getElementById(`bar-${id}`);
+                        if (bar) bar.style.width = `${percent}%`;
+                    }, (xhr) => {
+                        currentXhr = xhr;
+                    });
+
+                    // Finished!
+                    activeUploadsCount--;
+                    updateQueueState();
+
+                    // Display success state in card
+                    const badge = document.getElementById(`badge-${id}`);
+                    const bar = document.getElementById(`bar-${id}`);
+                    const percentText = document.getElementById(`percent-${id}`);
+                    const speedText = document.getElementById(`speed-${id}`);
+                    const cancelBtn = document.getElementById(`cancel-${id}`);
+                    const responseDiv = document.getElementById(`response-${id}`);
+
+                    if (badge) {
+                        badge.innerText = 'Success';
+                        badge.className = 'status-indicator success';
+                    }
+                    if (bar) {
+                        bar.classList.add('success');
+                        bar.style.width = '100%';
+                    }
+                    if (percentText) percentText.innerText = '100%';
+                    if (speedText) speedText.innerText = 'Finished';
+                    if (cancelBtn) cancelBtn.remove();
+
+                    // Convert to share URL
+                    const shareUrl = convertToShareUrl(responseData.url);
+
+                    if (responseDiv) {
+                        responseDiv.style.display = 'flex';
+                        responseDiv.innerHTML = `
+                            <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
+                            <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
+                        `;
+                        document.getElementById(`copy-btn-${id}`).addEventListener('click', () => {
+                            copyToClipboard(shareUrl, `copy-btn-${id}`);
+                        });
+                    }
+
+                    // Add folder to local history
+                    const newHistoryItem = {
+                        id: 'hist_' + Date.now(),
+                        name: `${folderName} (Folder)`,
+                        size: folderTotalSize,
+                        url: responseData.url, // Store the main .fileditch viewer link
+                        timestamp: Date.now(),
+                        mimeType: 'application/json' // will identify as folder
+                    };
+                    history.unshift(newHistoryItem);
+                    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+                    renderHistory();
+
+                    showToast(`Uploaded folder "${folderName}" successfully`, 'success');
+
+                    // Handle auto-clear
+                    const autoClear = autoClearSelect.value;
+                    if (autoClear === 'immediately') {
+                        card.remove();
+                    } else if (autoClear === '5s') {
+                        setTimeout(() => {
+                            card.remove();
+                        }, 5000);
+                    }
+
+                } catch (err) {
+                    if (cancelled) return;
+                    activeUploadsCount--;
+                    updateQueueState();
+
+                    // Show error state in card
+                    const badge = document.getElementById(`badge-${id}`);
+                    const bar = document.getElementById(`bar-${id}`);
+                    const percentText = document.getElementById(`percent-${id}`);
+                    const speedText = document.getElementById(`speed-${id}`);
+                    const cancelBtn = document.getElementById(`cancel-${id}`);
+
+                    if (badge) {
+                        badge.innerText = 'Failed';
+                        badge.className = 'status-indicator failed';
+                    }
+                    if (bar) {
+                        bar.style.backgroundColor = 'var(--danger)';
+                    }
+                    if (percentText) percentText.innerText = 'Error';
+                    if (speedText) {
+                        speedText.innerText = err.message || 'Error uploading folder';
+                        speedText.style.color = 'var(--danger)';
+                    }
+                    if (cancelBtn) {
+                        cancelBtn.title = 'Dismiss card';
+                        cancelBtn.innerHTML = '✕';
+                        const newBtn = cancelBtn.cloneNode(true);
+                        cancelBtn.parentNode.replaceChild(newBtn, cancelBtn);
+                        newBtn.addEventListener('click', () => card.remove());
+                    }
+
+                    showToast(`Failed uploading folder "${folderName}": ${err.message}`, 'error');
+                }
             }
 
             // History Panel Handler
@@ -1789,6 +2162,163 @@
                 }
             }
 
+            // Resolve Fileditch HTML link to direct stream URL
+            async function resolveDirectLink(url) {
+                if (url.includes('md5=')) return url;
+                
+                let resolvedUrl = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    resolvedUrl = `https://fileditchfiles.me/file.php?f=/${url.replace(/^\/+/, '')}`;
+                }
+                
+                const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) {
+                    throw new Error(`Failed to resolve direct link (Status: ${response.status})`);
+                }
+                const htmlText = await response.text();
+                const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
+                const match = htmlText.match(urlRegex);
+                if (match && match[1]) {
+                    let streamUrl = decodeHtmlEntities(match[1]);
+                    streamUrl = streamUrl.replace(/['"]+$/, '');
+                    return streamUrl;
+                }
+                throw new Error("Direct download token not found in page HTML.");
+            }
+
+            // Render folder component tree preview
+            function renderFolderPreview(manifest) {
+                currentFolderManifest = manifest;
+                
+                // Hide other players
+                rendererAudio.style.display = 'none';
+                rendererVideo.style.display = 'none';
+                rendererImage.style.display = 'none';
+                rendererDocument.style.display = 'none';
+                rendererFallback.style.display = 'none';
+                
+                // Show folder area
+                rendererFolder.style.display = 'block';
+                
+                folderNameDisplay.textContent = manifest.name || "Folder";
+                folderFilesCount.textContent = `${manifest.files.length} file${manifest.files.length === 1 ? '' : 's'}`;
+                
+                folderContentsList.innerHTML = '';
+                manifest.files.forEach(file => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = `
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background: rgba(255, 255, 255, 0.015);
+                        border: 1px solid rgba(255, 255, 255, 0.04);
+                        padding: 0.6rem 0.8rem;
+                        border-radius: 6px;
+                        gap: 1rem;
+                    `;
+                    itemDiv.innerHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1;">
+                            <span style="font-size: 0.8rem; font-weight: 500; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-primary);" title="${escapeHtml(file.path)}">${escapeHtml(file.path)}</span>
+                            <span style="font-size: 0.7rem; color: var(--text-muted);">${formatBytes(file.size)}</span>
+                        </div>
+                        <div style="display: flex; gap: 0.4rem; flex-shrink: 0;">
+                            <button class="btn-history-action btn-preview-folder-file" data-url="${file.url}" style="font-size: 0.75rem;">Preview</button>
+                            <a href="${file.url}" target="_blank" class="btn-history-action" style="text-decoration: none; font-size: 0.75rem; line-height: 1.8;">Download</a>
+                        </div>
+                    `;
+                    folderContentsList.appendChild(itemDiv);
+                });
+
+                // Attach Preview events to items inside folder
+                folderContentsList.querySelectorAll('.btn-preview-folder-file').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const fileUrl = e.currentTarget.getAttribute('data-url');
+                        streamerInput.value = fileUrl;
+                        streamBtn.click();
+                    });
+                });
+            }
+
+            // Bind ZIP compiler action
+            btnDownloadFolderZip.onclick = async () => {
+                if (!currentFolderManifest || !currentFolderManifest.files || currentFolderManifest.files.length === 0) return;
+                
+                if (typeof JSZip === 'undefined') {
+                    showToast("ZIP library is not loaded. Please wait.", "error");
+                    return;
+                }
+
+                const progressWrapper = document.getElementById('folder-zip-progress-wrapper');
+                const progressStatus = document.getElementById('folder-zip-status');
+                const progressPercent = document.getElementById('folder-zip-percent');
+                const progressBar = document.getElementById('folder-zip-progress-bar');
+
+                progressWrapper.style.display = 'block';
+                btnDownloadFolderZip.disabled = true;
+
+                try {
+                    const zip = new JSZip();
+                    const total = currentFolderManifest.files.length;
+
+                    for (let i = 0; i < total; i++) {
+                        const file = currentFolderManifest.files[i];
+                        progressStatus.innerText = `Resolving link ${i + 1}/${total}...`;
+                        
+                        // Extract direct tokenized download link
+                        let directUrl = '';
+                        try {
+                            directUrl = await resolveDirectLink(file.url);
+                        } catch (err) {
+                            console.warn(`Failed resolving direct url for ${file.path}, trying fallback`, err);
+                            directUrl = file.url;
+                        }
+
+                        progressStatus.innerText = `Downloading ${i + 1}/${total} (${escapeHtml(file.path.split('/').pop())})...`;
+
+                        // Fetch through proxy
+                        const proxyFileUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(directUrl)}`;
+                        const fileResponse = await fetch(proxyFileUrl);
+                        if (!fileResponse.ok) {
+                            throw new Error(`Failed downloading file "${file.path}" (Status: ${fileResponse.status})`);
+                        }
+                        const arrayBuffer = await fileResponse.arrayBuffer();
+
+                        // Add to ZIP (preserving paths)
+                        zip.file(file.path, arrayBuffer);
+
+                        // Progress
+                        const percent = Math.round(((i + 1) / total) * 100);
+                        progressBar.style.width = `${percent}%`;
+                        progressPercent.innerText = `${percent}%`;
+                    }
+
+                    progressStatus.innerText = "Generating ZIP file...";
+                    const zipBlob = await zip.generateAsync({ type: "blob" });
+
+                    progressStatus.innerText = "Triggering download...";
+                    const url = URL.createObjectURL(zipBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${currentFolderManifest.name || "Folder"}.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    progressStatus.innerText = "Done!";
+                    showToast(`Successfully compiled and downloaded ZIP for "${currentFolderManifest.name}"!`, "success");
+
+                } catch (err) {
+                    showToast(`ZIP generation failed: ${err.message}`, "error");
+                } finally {
+                    btnDownloadFolderZip.disabled = false;
+                    setTimeout(() => {
+                        progressWrapper.style.display = 'none';
+                    }, 3000);
+                }
+            };
+
             // Listen to hashchange
             window.addEventListener('hashchange', checkHashAndStream);
 
@@ -1851,7 +2381,17 @@
             </div>
             <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
                 <div style="border-left: 2px solid var(--accent-purple); padding-left: 0.75rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">June 25, 2026</div>
+                    <div style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">July 06, 2026</div>
+                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Folder Uploads & Client-side ZIP Compilation (.fileditch format)</strong>
+                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                        <li>Added support for full folder uploading, recursively transmitting files.</li>
+                        <li>Compiles metadata into a custom <code>.fileditch</code> manifest format.</li>
+                        <li>Added folder tree explorer displaying directory structures for shared folder links.</li>
+                        <li>Added client-side ZIP packaging via JSZip to download whole folders directly.</li>
+                    </ul>
+                </div>
+                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 25, 2026</div>
                     <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Custom Double-Hash sharing links & ad-free streaming</strong>
                     <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
                         <li>Files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>) instead of standard FileDitch page links.</li>
