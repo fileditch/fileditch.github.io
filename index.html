@@ -915,11 +915,11 @@
             </div>
             <div class="settings-group" style="position: relative;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <label class="settings-label" for="upload-retention">retention policy</label>
+                    <label class="settings-label" for="upload-retention">expiry</label>
                 </div>
                 <select class="settings-select" id="upload-retention">
-                    <option value="permanent" selected>permanent (new.fileditch.com)</option>
-                    <option value="temporary">temporary (72h - temp.fileditch.com)</option>
+                    <option value="permanent" selected>permanent (never expires)</option>
+                    <option value="temporary">temporary (expires in 72h)</option>
                 </select>
             </div>
         </div>
@@ -2399,17 +2399,12 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">multipart
-                            form-data (recommended)</strong>
-                        standard browser-compatible file upload method. it encodes the file as form fields. this is the
-                        most reliable, compatible, and highly recommended method for all browsers.
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">multipart form-data (recommended)</strong>
+                        the standard way to upload files on the web. it packs the file inside form fields. this is highly recommended and works reliably on all browsers.
                     </div>
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">raw body
-                            stream</strong>
-                        sends the raw file payload directly in the http request body (`application/octet-stream`)
-                        without any wrapper metadata. this matches direct `curl -T` behavior and is slightly faster for
-                        large files, but is less supported by legacy proxies.
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">raw body stream</strong>
+                        sends the raw file bytes directly in the http request body (using `application/octet-stream`) without form wrapping. this is slightly faster for very large files, but is not supported by some legacy firewalls and proxies.
                     </div>
                 </div>
             </div>
@@ -2424,16 +2419,11 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">how it
-                            works:</strong>
-                        paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>).
-                        the viewer fetches the html source of the page through a worker proxy to bypass browser cors
-                        blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens),
-                        and loads the file directly in the browser.
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">how it works:</strong>
+                        paste a share link or file path (e.g. <code>##alpha10/...</code>). the viewer downloads the page html through a worker proxy (api.pidi.workers.dev) to bypass browser cors limits. it then finds the direct link (with temporary md5 and expiry tokens) and streams the media inside the browser player.
                     </div>
                     <div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">supported
-                            filetypes for viewing:</strong>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">supported file formats:</strong>
                         <ul
                             style="padding-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.4rem;">
                             <li><strong>audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
@@ -2459,10 +2449,10 @@
                         <div
                             style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">
                             july 06, 2026</div>
-                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">temporal uploads (temp.fileditch.com) & folder uploads</strong>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">temporary uploads (temp.fileditch.com) & folder uploads</strong>
                         <ul
                             style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                            <li>added retention policy switcher to toggle between permanent and temporary 72-hour hosting.</li>
+                            <li>added expiry switcher to toggle between permanent and temporary 72-hour hosting.</li>
                             <li>updated file and folder upload pipelines to hit temp.fileditch.com dynamically.</li>
                             <li>converted all mixed-case frontend labels, descriptions, and button texts to lowercase.</li>
                             <li>added support for recursive folder uploads and client-side ZIP compilation via .fileditch manifests.</li>
