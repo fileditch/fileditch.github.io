@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FileDitch — Fast File Hosting</title>
-    <meta name="description" content="FileDitch - Elegant & No-Bullshit File Hosting. Simple HTTP uploads, no accounts, no authentication. Now with instant multi-media streaming.">
-    
+    <meta name="description"
+        content="FileDitch - Elegant & No-Bullshit File Hosting. Simple HTTP uploads, no accounts, no authentication. Now with instant multi-media streaming.">
+
     <!-- Google Fonts Preconnect and Links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400..800&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap');
 
@@ -21,22 +25,22 @@
             --bg-card: rgba(17, 15, 24, 0.7);
             --border-color: rgba(126, 115, 255, 0.1);
             --border-dashed: rgba(255, 255, 255, 0.15);
-            
+
             --accent-purple: #7e73ff;
             --accent-purple-glow: rgba(126, 115, 255, 0.3);
             --accent-gradient: linear-gradient(135deg, #ffffff 0%, #7e73ff 100%);
-            
+
             --success: #10b981;
             --danger: #f43f5e;
             --warning: #f59e0b;
-            
+
             --text-primary: #ffffff;
             --text-muted: #625c75;
             --text-purple: #7e73ff;
-            
+
             --font-mono: 'DM Mono', monospace;
             --font-header: 'Syne', sans-serif;
-            
+
             --transition-fast: 0.15s ease;
             --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
@@ -55,8 +59,9 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            font-family: var(--font-mono); /* Standard text, blocks, and labels all use monospace font */
-            background-image: 
+            font-family: var(--font-mono);
+            /* Standard text, blocks, and labels all use monospace font */
+            background-image:
                 radial-gradient(circle at 50% 15%, rgba(126, 115, 255, 0.08) 0%, transparent 50%);
         }
 
@@ -364,7 +369,7 @@
             display: block;
             margin: 0 auto;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .doc-viewer-header {
@@ -620,6 +625,7 @@
         .history-list::-webkit-scrollbar {
             width: 4px;
         }
+
         .history-list::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 2px;
@@ -746,9 +752,17 @@
             animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .toast.success { border-left: 3px solid var(--success); }
-        .toast.error { border-left: 3px solid var(--danger); }
-        .toast.info { border-left: 3px solid var(--accent-purple); }
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 3px solid var(--accent-purple);
+        }
 
         /* Navigation Footer */
         footer {
@@ -784,6 +798,7 @@
                 transform: translateY(15px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -839,14 +854,19 @@
         }
 
         @keyframes fadeIn {
-            to { opacity: 1; }
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes scaleUp {
-            to { transform: scale(1); }
+            to {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="app-container">
@@ -872,8 +892,9 @@
                 <div class="dropzone-arrow">↑</div>
                 <h2 class="dropzone-title">Drop files here</h2>
                 <div class="dropzone-desc" style="margin-bottom: 1.25rem;">or click to browse files (max. 100gb)</div>
-                <label for="folder-input" class="btn-copy" id="btn-browse-folder" style="font-size: 0.75rem; height: 32px; padding: 0 1rem; position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; gap: 0.3rem; margin: 0 auto; text-decoration: none; user-select: none;">
-                    📁 Select Folder
+                <label for="folder-input" class="btn-copy" id="btn-browse-folder"
+                    style="font-size: 0.75rem; height: 32px; padding: 0 1rem; position: relative; z-index: 10; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; gap: 0.3rem; margin: 0 auto; text-decoration: none; user-select: none;">
+                    📁 select folder
                 </label>
             </div>
         </div>
@@ -883,7 +904,9 @@
             <div class="settings-group" style="position: relative;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                     <label class="settings-label" for="upload-method">Upload Method</label>
-                    <button type="button" class="btn-history-action" id="upload-method-info-btn" style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;" title="Upload Methods Info">ⓘ</button>
+                    <button type="button" class="btn-history-action" id="upload-method-info-btn"
+                        style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;"
+                        title="Upload Methods Info">ⓘ</button>
                 </div>
                 <select class="settings-select" id="upload-method">
                     <option value="multipart" selected>Multipart Form-Data (Recommended)</option>
@@ -894,26 +917,29 @@
 
         <!-- Dashboard Grid (Streamer & Combined Uploads Interface) -->
         <div class="dashboard-grid">
-            
+
             <!-- Fileditch Link Streamer Panel -->
             <div class="glass-panel">
                 <div class="panel-header">
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <h3 class="panel-title">Fileditch Streamer</h3>
-                        <button type="button" class="btn-history-action" id="streamer-info-btn" style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;" title="Streamer Info">ⓘ</button>
+                        <h3 class="panel-title">File Viewer</h3>
+                        <button type="button" class="btn-history-action" id="streamer-info-btn"
+                            style="padding: 0; font-size: 0.85rem; line-height: 1; color: var(--text-purple); background: transparent; border: none; cursor: pointer;"
+                            title="Streamer Info">ⓘ</button>
                     </div>
-                    <span style="font-size: 0.75rem; color: var(--text-purple);">stream your files via link</span>
+                    <span style="font-size: 0.75rem; color: var(--text-purple);">view your files via link</span>
                 </div>
                 <div class="streamer-container">
                     <div class="settings-group" style="margin-bottom: 1rem; background: rgba(0,0,0,0.2);">
-                        <label class="settings-label" for="streamer-input">Paste Share Link or File Path</label>
-                        <input type="text" id="streamer-input" class="streamer-input" placeholder="##alpha10/4e4f417ba5d06168b288/filename.png" value="">
+                        <label class="settings-label" for="streamer-input">paste link or filepath</label>
+                        <input type="text" id="streamer-input" class="streamer-input"
+                            placeholder="##alpha10/4e4f417ba5d06168b288/filename.png" value="">
                     </div>
-                    <button class="btn-streamer" id="btn-stream">stream/preview File</button>
-                    
+                    <button class="btn-streamer" id="btn-stream">stream/view file</button>
+
                     <div id="streamer-status" class="streamer-status" style="display: none;"></div>
                     <div id="streamer-error" class="streamer-error" style="display: none;"></div>
-                    
+
                     <div id="streamer-player-container" class="streamer-player-container" style="display: none;">
                         <!-- AUDIO RENDERER -->
                         <div id="renderer-audio" style="display: none;">
@@ -934,43 +960,58 @@
                         <div id="renderer-document" style="display: none;">
                             <div class="doc-viewer-header">
                                 <span id="doc-title-display">Document Viewer</span>
-                                <a id="doc-external-link" href="#" target="_blank" class="btn-history-action" style="text-decoration:none; color: var(--accent-purple);">Open In New Tab</a>
+                                <a id="doc-external-link" href="#" target="_blank" class="btn-history-action"
+                                    style="text-decoration:none; color: var(--accent-purple);">Open In New Tab</a>
                             </div>
-                            <iframe id="streamer-doc-viewer" class="streamer-doc" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+                            <iframe id="streamer-doc-viewer" class="streamer-doc"
+                                sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
                         </div>
 
                         <!-- UNSUPPORTED / FALLBACK -->
                         <div id="renderer-fallback" style="display: none;" class="unsupported-preview">
-                            <div class="unsupported-title" id="fallback-file-name">Unsupported Preview Format</div>
-                            <div class="unsupported-desc">This file type cannot be previewed natively. Click below to download or open directly in your browser.</div>
-                            <a id="fallback-external-link" href="#" target="_blank" class="btn-streamer" style="text-decoration: none; display: inline-block; width: auto; padding: 0.6rem 1.2rem;">Open File Directly</a>
+                            <div class="unsupported-title" id="fallback-file-name">unsupported filetype</div>
+                            <div class="unsupported-desc">this file type cannot be previewed. click below to download or
+                                open directly in your browser.</div>
+                            <a id="fallback-external-link" href="#" target="_blank" class="btn-streamer"
+                                style="text-decoration: none; display: inline-block; width: auto; padding: 0.6rem 1.2rem;">Open
+                                File Directly</a>
                         </div>
 
                         <!-- FOLDER RENDERER -->
-                        <div id="renderer-folder" style="display: none; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 1rem; width: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div id="renderer-folder"
+                            style="display: none; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 1rem; width: 100%;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                                     <span style="font-size: 1.2rem;">📁</span>
-                                    <strong id="folder-name-display" style="font-size: 1rem; color: var(--text-primary);">Folder Name</strong>
-                                    <span id="folder-files-count" style="font-size: 0.75rem; color: var(--text-muted);">0 files</span>
+                                    <strong id="folder-name-display"
+                                        style="font-size: 1rem; color: var(--text-primary);">Folder Name</strong>
+                                    <span id="folder-files-count"
+                                        style="font-size: 0.75rem; color: var(--text-muted);">0 files</span>
                                 </div>
-                                <button class="btn-copy" id="btn-download-folder-zip" style="font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem; height: 32px; padding: 0 0.8rem;">
-                                    <span>📦</span> Download as ZIP
+                                <button class="btn-copy" id="btn-download-folder-zip"
+                                    style="font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem; height: 32px; padding: 0 0.8rem;">
+                                    <span>📦</span> download as zip
                                 </button>
                             </div>
-                            
+
                             <!-- Folder ZIP progress -->
-                            <div id="folder-zip-progress-wrapper" style="display: none; margin-bottom: 1rem; background: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.03);">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
-                                    <span id="folder-zip-status" style="color: var(--accent-purple);">Compiling files...</span>
+                            <div id="folder-zip-progress-wrapper"
+                                style="display: none; margin-bottom: 1rem; background: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.03);">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.25rem;">
+                                    <span id="folder-zip-status" style="color: var(--accent-purple);">Compiling
+                                        files...</span>
                                     <span id="folder-zip-percent">0%</span>
                                 </div>
                                 <div class="progress-bar-bg" style="height: 4px; background: rgba(255,255,255,0.05);">
-                                    <div class="progress-bar-fill" id="folder-zip-progress-bar" style="width: 0%; background: var(--accent-purple);"></div>
+                                    <div class="progress-bar-fill" id="folder-zip-progress-bar"
+                                        style="width: 0%; background: var(--accent-purple);"></div>
                                 </div>
                             </div>
 
-                            <div style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;" id="folder-contents-list">
+                            <div style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;"
+                                id="folder-contents-list">
                                 <!-- list of files will render here -->
                             </div>
                         </div>
@@ -987,22 +1028,28 @@
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                         <!-- Auto-Clear Queue setting dropdown moved here -->
-                        <div style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); padding: 0.25rem 0.5rem; border-radius: 4px;">
-                            <label class="settings-label" for="auto-clear" style="margin: 0; font-size: 0.6rem;">Auto-Clear</label>
-                            <select class="settings-select" id="auto-clear" style="width: auto; font-size: 0.75rem; cursor: pointer;">
+                        <div
+                            style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); padding: 0.25rem 0.5rem; border-radius: 4px;">
+                            <label class="settings-label" for="auto-clear"
+                                style="margin: 0; font-size: 0.6rem;">Auto-Clear</label>
+                            <select class="settings-select" id="auto-clear"
+                                style="width: auto; font-size: 0.75rem; cursor: pointer;">
                                 <option value="never" selected>Keep Completed</option>
                                 <option value="5s">Clear after 5s</option>
                                 <option value="immediately">Clear immediately</option>
                             </select>
                         </div>
-                        <button class="btn-clear-all" id="clear-history" style="font-size: 0.75rem;">Clear History</button>
+                        <button class="btn-clear-all" id="clear-history" style="font-size: 0.75rem;">Clear
+                            History</button>
                     </div>
                 </div>
-                
+
                 <!-- Queue Section -->
                 <div id="queue-section" style="margin-bottom: 1.5rem;">
-                    <div class="settings-label" style="font-size: 0.65rem; margin-bottom: 0.5rem; color: var(--text-purple);">Active Queue</div>
-                    <div id="queue-empty" class="empty-state" style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
+                    <div class="settings-label"
+                        style="font-size: 0.65rem; margin-bottom: 0.5rem; color: var(--text-purple);">Active Queue</div>
+                    <div id="queue-empty" class="empty-state"
+                        style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
                         no uploads active O_O
                     </div>
                     <div id="queue-list">
@@ -1014,338 +1061,342 @@
 
                 <!-- History Section -->
                 <div id="history-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                        <div class="settings-label" style="font-size: 0.65rem; color: var(--text-purple); margin: 0;">Upload History</div>
-                        <div style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; text-align: right;">Note: Delete is client-side only. Files remain active on server.</div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div class="settings-label" style="font-size: 0.65rem; color: var(--text-purple); margin: 0;">
+                            Upload History</div>
+                        <div
+                            style="font-size: 0.68rem; color: var(--text-muted); font-style: italic; text-align: right;">
+                            Note: Delete is client-side only. Files remain active on server.</div>
                     </div>
-                    <div id="history-empty" class="empty-state" style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
-                        nothing to see here >–<
-                    </div>
-                    <div class="history-list" id="history-list">
-                        <!-- History cards render here -->
+                    <div id="history-empty" class="empty-state"
+                        style="padding: 1.5rem 0; border: 1px dashed rgba(255,255,255,0.02); border-radius: 6px; background: rgba(0,0,0,0.08);">
+                        nothing to see here >–< </div>
+                            <div class="history-list" id="history-list">
+                                <!-- History cards render here -->
+                            </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-    <!-- System Toast Manager -->
-    <div class="toast-container" id="toast-container"></div>
+        <!-- System Toast Manager -->
+        <div class="toast-container" id="toast-container"></div>
 
-    <!-- Navigation Footer -->
-    <footer>
-        <div class="footer-nav">
-            <a href="https://redretep.github.io" target="_blank">about me</a>
-            <a href="./faq.html">faq</a>
-            <a href="./api" target="_blank">api</a>
-            <a href="mailto:peterdbaltes@gmail.com" target="_blank">contact</a>
-            <a href="https://github.com/redretep/fileditch" target="_blank">github</a>
-        </div>
-    </footer>
+        <!-- Navigation Footer -->
+        <footer>
+            <div class="footer-nav">
+                <a href="https://redretep.github.io" target="_blank">about me</a>
+                <a href="./faq.html">faq</a>
+                <a href="./api" target="_blank">api</a>
+                <a href="mailto:peterdbaltes@gmail.com" target="_blank">contact</a>
+                <a href="https://github.com/redretep/fileditch" target="_blank">github</a>
+            </div>
+        </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // DOM Elements
-            const dropzone = document.getElementById('dropzone');
-            const fileInput = document.getElementById('file-input');
-            const folderInput = document.getElementById('folder-input');
-            const btnBrowseFolder = document.getElementById('btn-browse-folder');
-            const uploadMethodSelect = document.getElementById('upload-method');
-            const autoClearSelect = document.getElementById('auto-clear');
-            
-            const queueList = document.getElementById('queue-list');
-            const queueEmpty = document.getElementById('queue-empty');
-            const queueCount = document.getElementById('queue-count');
-            
-            const historyList = document.getElementById('history-list');
-            const historyEmpty = document.getElementById('history-empty');
-            const clearHistoryBtn = document.getElementById('clear-history');
-            
-            const toastContainer = document.getElementById('toast-container');
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // DOM Elements
+                const dropzone = document.getElementById('dropzone');
+                const fileInput = document.getElementById('file-input');
+                const folderInput = document.getElementById('folder-input');
+                const btnBrowseFolder = document.getElementById('btn-browse-folder');
+                const uploadMethodSelect = document.getElementById('upload-method');
+                const autoClearSelect = document.getElementById('auto-clear');
 
-            // Fileditch Streamer Elements
-            const streamBtn = document.getElementById('btn-stream');
-            const streamerInput = document.getElementById('streamer-input');
-            const streamerStatus = document.getElementById('streamer-status');
-            const streamerError = document.getElementById('streamer-error');
-            const streamerPlayerContainer = document.getElementById('streamer-player-container');
-            
-            // Sub-renderers
-            const rendererAudio = document.getElementById('renderer-audio');
-            const streamerAudioPlayer = document.getElementById('streamer-audio-player');
-            
-            const rendererVideo = document.getElementById('renderer-video');
-            const streamerVideoPlayer = document.getElementById('streamer-video-player');
-            
-            const rendererImage = document.getElementById('renderer-image');
-            const streamerImagePreview = document.getElementById('streamer-image-preview');
-            
-            const rendererDocument = document.getElementById('renderer-document');
-            const docTitleDisplay = document.getElementById('doc-title-display');
-            const docExternalLink = document.getElementById('doc-external-link');
-            const streamerDocViewer = document.getElementById('streamer-doc-viewer');
+                const queueList = document.getElementById('queue-list');
+                const queueEmpty = document.getElementById('queue-empty');
+                const queueCount = document.getElementById('queue-count');
 
-            const rendererFallback = document.getElementById('renderer-fallback');
-            const fallbackFileName = document.getElementById('fallback-file-name');
-            const fallbackExternalLink = document.getElementById('fallback-external-link');
+                const historyList = document.getElementById('history-list');
+                const historyEmpty = document.getElementById('history-empty');
+                const clearHistoryBtn = document.getElementById('clear-history');
 
-            const rendererFolder = document.getElementById('renderer-folder');
-            const folderNameDisplay = document.getElementById('folder-name-display');
-            const folderFilesCount = document.getElementById('folder-files-count');
-            const folderContentsList = document.getElementById('folder-contents-list');
-            const btnDownloadFolderZip = document.getElementById('btn-download-folder-zip');
+                const toastContainer = document.getElementById('toast-container');
 
-            // Local Storage Key
-            const HISTORY_KEY = 'fileditch_upload_history';
+                // File Viewer Elements
+                const streamBtn = document.getElementById('btn-stream');
+                const streamerInput = document.getElementById('streamer-input');
+                const streamerStatus = document.getElementById('streamer-status');
+                const streamerError = document.getElementById('streamer-error');
+                const streamerPlayerContainer = document.getElementById('streamer-player-container');
 
-            // State Variables
-            let activeUploadsCount = 0;
-            let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-            let currentFolderManifest = null;
+                // Sub-renderers
+                const rendererAudio = document.getElementById('renderer-audio');
+                const streamerAudioPlayer = document.getElementById('streamer-audio-player');
 
-            // Banned extensions list from FileDitch API
-            const BLOCKED_EXTENSIONS = ['php', 'html', 'htm', 'js', 'exe', 'apk', 'sh', 'py', 'bat', 'cmd', 'msi', 'vbs', 'scr', 'cpl'];
-            const MAX_FILE_SIZE = 100 * 1024 * 1024 * 1024; // 100 GB
+                const rendererVideo = document.getElementById('renderer-video');
+                const streamerVideoPlayer = document.getElementById('streamer-video-player');
 
-            // Initialize UI
-            renderHistory();
+                const rendererImage = document.getElementById('renderer-image');
+                const streamerImagePreview = document.getElementById('streamer-image-preview');
 
-            // Event Listeners for Browse
-            dropzone.addEventListener('click', (e) => {
-                if (e.target.closest('#btn-browse-folder') || e.target.closest('input[type="file"]')) {
-                    return;
-                }
-                fileInput.click();
-            });
+                const rendererDocument = document.getElementById('renderer-document');
+                const docTitleDisplay = document.getElementById('doc-title-display');
+                const docExternalLink = document.getElementById('doc-external-link');
+                const streamerDocViewer = document.getElementById('streamer-doc-viewer');
 
-            btnBrowseFolder.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
+                const rendererFallback = document.getElementById('renderer-fallback');
+                const fallbackFileName = document.getElementById('fallback-file-name');
+                const fallbackExternalLink = document.getElementById('fallback-external-link');
 
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-                fileInput.value = ''; // Reset
-            });
+                const rendererFolder = document.getElementById('renderer-folder');
+                const folderNameDisplay = document.getElementById('folder-name-display');
+                const folderFilesCount = document.getElementById('folder-files-count');
+                const folderContentsList = document.getElementById('folder-contents-list');
+                const btnDownloadFolderZip = document.getElementById('btn-download-folder-zip');
 
-            folderInput.addEventListener('change', (e) => {
-                const files = e.target.files;
-                if (files && files.length > 0) {
-                    let folderName = 'Folder';
-                    if (files[0].webkitRelativePath) {
-                        folderName = files[0].webkitRelativePath.split('/')[0];
-                    }
-                    uploadFolder(files, folderName);
-                }
-                folderInput.value = ''; // Reset
-            });
+                // Local Storage Key
+                const HISTORY_KEY = 'fileditch_upload_history';
 
-            // Drag & Drop event bindings
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropzone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropzone.classList.add('dragover');
-                }, false);
-            });
+                // State Variables
+                let activeUploadsCount = 0;
+                let history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+                let currentFolderManifest = null;
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropzone.classList.remove('dragover');
-                }, false);
-            });
+                // Banned extensions list from FileDitch API
+                const BLOCKED_EXTENSIONS = ['php', 'html', 'htm', 'js', 'exe', 'apk', 'sh', 'py', 'bat', 'cmd', 'msi', 'vbs', 'scr', 'cpl'];
+                const MAX_FILE_SIZE = 100 * 1024 * 1024 * 1024; // 100 GB
 
-            dropzone.addEventListener('drop', (e) => {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                handleFiles(files);
-            });
+                // Initialize UI
+                renderHistory();
 
-            clearHistoryBtn.addEventListener('click', () => {
-                if (history.length === 0) return;
-                
-                if (confirm('Clear your local history? This will only clear your history log, your uploaded files remain active.')) {
-                    history = [];
-                    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-                    renderHistory();
-                    showToast('History log cleared successfully', 'success');
-                }
-            });
-
-            // Fileditch Audio/Video/Image/Document Streamer logic
-            streamBtn.addEventListener('click', async () => {
-                const inputUrl = streamerInput.value.trim();
-                
-                let resolvedUrl = inputUrl;
-                if (inputUrl) {
-                    const hashIndex = inputUrl.indexOf('#');
-                    if (hashIndex !== -1) {
-                        const filePath = inputUrl.substring(hashIndex).replace(/^#+/, '').replace(/^\/+/, '');
-                        resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
-                    } else if (!inputUrl.startsWith('http://') && !inputUrl.startsWith('https://') && !inputUrl.startsWith('file://')) {
-                        const filePath = inputUrl.replace(/^\/+/, '');
-                        resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
-                    }
-                }
-
-                const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
-
-                // Reset Player UI State
-                streamerError.style.display = 'none';
-                streamerStatus.style.display = 'block';
-                streamerPlayerContainer.style.display = 'none';
-                
-                // Pause and clear existing playback elements to prevent overlapping sound
-                streamerAudioPlayer.pause(); streamerAudioPlayer.src = '';
-                streamerVideoPlayer.pause(); streamerVideoPlayer.src = '';
-                streamerImagePreview.src = '';
-                streamerDocViewer.src = 'about:blank';
-                
-                rendererAudio.style.display = 'none';
-                rendererVideo.style.display = 'none';
-                rendererImage.style.display = 'none';
-                rendererDocument.style.display = 'none';
-                rendererFallback.style.display = 'none';
-
-                if (!inputUrl) {
-                    showStreamerError("Please paste a valid share URL or file path.");
-                    return;
-                }
-
-                try {
-                    streamBtn.disabled = true;
-                    streamerStatus.textContent = "Fetching page source via proxy...";
-
-                    const response = await fetch(proxyUrl);
-                    if (!response.ok) {
-                        throw new Error(`Proxy responded with status code: ${response.status}`);
-                    }
-
-                    const htmlText = await response.text();
-                    streamerStatus.textContent = "Parsing stream URL and cleaning parameters...";
-
-                    // Match strings containing md5= up until the closing quote or space
-                    const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
-                    const match = htmlText.match(urlRegex);
-
-                    if (match && match[1]) {
-                        // Decode all HTML entities perfectly (handles &amp; -> &, &#39; -> ', etc.)
-                        let streamUrl = decodeHtmlEntities(match[1]);
-                        
-                        // Clean up any trailing quotes captured if the source HTML was single-quoted or double-quoted
-                        streamUrl = streamUrl.replace(/['"]+$/, '');
-                        
-                        // Safety Check: Enforce security blocks ONLY on the resolved, decoded direct URL extension
-                        const fileExt = getFileExtension(streamUrl);
-                        if (BLOCKED_EXTENSIONS.includes(fileExt)) {
-                            throw new Error(`The resolved file extension .${fileExt} is blocked for security reasons.`);
-                        }
-
-                        // Detect parsed file type
-                        const fileType = getFileType(streamUrl);
-                        const fileName = decodeURIComponent(streamUrl.split('/').pop().split('?')[0]);
-
-                        streamerStatus.textContent = `Resolving media preview [${fileType.toUpperCase()}]...`;
-                        streamerPlayerContainer.style.display = 'flex';
-
-                        // Check if it's a folder manifest
-                        if (fileExt === 'fileditch') {
-                            streamerStatus.textContent = "Loading folder structure...";
-                            const manifestProxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(streamUrl)}`;
-                            const manifestResponse = await fetch(manifestProxyUrl);
-                            if (!manifestResponse.ok) {
-                                throw new Error(`Failed to load folder manifest (Status: ${manifestResponse.status})`);
-                            }
-                            const folderManifest = await manifestResponse.json();
-                            renderFolderPreview(folderManifest);
-                            streamerStatus.style.display = 'none';
-                            showToast("Folder manifest loaded successfully!", "success");
-                        }
-                        else if (fileType === 'audio') {
-                            rendererAudio.style.display = 'block';
-                            streamerAudioPlayer.src = streamUrl;
-                            streamerAudioPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
-                        } 
-                        else if (fileType === 'video') {
-                            rendererVideo.style.display = 'block';
-                            streamerVideoPlayer.src = streamUrl;
-                            streamerVideoPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
-                        } 
-                        else if (fileType === 'image') {
-                            rendererImage.style.display = 'block';
-                            streamerImagePreview.src = streamUrl;
-                        } 
-                        else if (fileType === 'document') {
-                            rendererDocument.style.display = 'block';
-                            docTitleDisplay.textContent = fileName || "Document View";
-                            docExternalLink.href = streamUrl;
-                            streamerDocViewer.src = streamUrl;
-                        } 
-                        else {
-                            rendererFallback.style.display = 'block';
-                            fallbackFileName.textContent = fileName || "Unsupported Preview File";
-                            fallbackExternalLink.href = streamUrl;
-                        }
-
-                        streamerStatus.style.display = 'none';
-                        showToast("Stream link successfully resolved!", "success");
-                    } else {
-                        throw new Error("Could not find a valid stream link in the HTML page. The link may have expired or is invalid.");
-                    }
-
-                } catch (error) {
-                    showStreamerError(error.message);
-                } finally {
-                    streamBtn.disabled = false;
-                }
-            });
-
-            function showStreamerError(message) {
-                streamerStatus.style.display = 'none';
-                streamerError.textContent = `Error: ${message}`;
-                streamerError.style.display = 'block';
-                showToast(`Stream Error: ${message}`, 'error');
-            }
-
-            // File Processing and Validation
-            function handleFiles(files) {
-                if (!files || files.length === 0) return;
-
-                Array.from(files).forEach(file => {
-                    // Validation: File Size
-                    if (file.size > MAX_FILE_SIZE) {
-                        showToast(`"${file.name}" exceeds the 100 GB limit.`, 'error');
+                // Event Listeners for Browse
+                dropzone.addEventListener('click', (e) => {
+                    if (e.target.closest('#btn-browse-folder') || e.target.closest('input[type="file"]')) {
                         return;
                     }
-
-                    // Validation: File Extension
-                    const ext = getFileExtension(file.name);
-                    if (BLOCKED_EXTENSIONS.includes(ext)) {
-                        showToast(`.${ext} files are blocked for security reasons.`, 'error');
-                        return;
-                    }
-
-                    // Valid file, start uploading
-                    uploadFile(file);
+                    fileInput.click();
                 });
-            }
 
-            // Main Uploader Function using XMLHttpRequest for accurate progress reports
-            function uploadFile(file) {
-                const id = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                const uploadMethod = uploadMethodSelect.value;
-                
-                // Update state
-                activeUploadsCount++;
-                updateQueueState();
+                btnBrowseFolder.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
 
-                // Create active queue card matching new design variables
-                const card = document.createElement('div');
-                card.className = 'upload-card';
-                card.id = id;
-                card.innerHTML = `
+                fileInput.addEventListener('change', (e) => {
+                    handleFiles(e.target.files);
+                    fileInput.value = ''; // Reset
+                });
+
+                folderInput.addEventListener('change', (e) => {
+                    const files = e.target.files;
+                    if (files && files.length > 0) {
+                        let folderName = 'Folder';
+                        if (files[0].webkitRelativePath) {
+                            folderName = files[0].webkitRelativePath.split('/')[0];
+                        }
+                        uploadFolder(files, folderName);
+                    }
+                    folderInput.value = ''; // Reset
+                });
+
+                // Drag & Drop event bindings
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.add('dragover');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.remove('dragover');
+                    }, false);
+                });
+
+                dropzone.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    handleFiles(files);
+                });
+
+                clearHistoryBtn.addEventListener('click', () => {
+                    if (history.length === 0) return;
+
+                    if (confirm('Clear your local history? This will only clear your history log, your uploaded files remain active.')) {
+                        history = [];
+                        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+                        renderHistory();
+                        showToast('History log cleared successfully', 'success');
+                    }
+                });
+
+                // Fileditch Audio/Video/Image/Document Streamer logic
+                streamBtn.addEventListener('click', async () => {
+                    const inputUrl = streamerInput.value.trim();
+
+                    let resolvedUrl = inputUrl;
+                    if (inputUrl) {
+                        const hashIndex = inputUrl.indexOf('#');
+                        if (hashIndex !== -1) {
+                            const filePath = inputUrl.substring(hashIndex).replace(/^#+/, '').replace(/^\/+/, '');
+                            resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                        } else if (!inputUrl.startsWith('http://') && !inputUrl.startsWith('https://') && !inputUrl.startsWith('file://')) {
+                            const filePath = inputUrl.replace(/^\/+/, '');
+                            resolvedUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                        }
+                    }
+
+                    const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
+
+                    // Reset Player UI State
+                    streamerError.style.display = 'none';
+                    streamerStatus.style.display = 'block';
+                    streamerPlayerContainer.style.display = 'none';
+
+                    // Pause and clear existing playback elements to prevent overlapping sound
+                    streamerAudioPlayer.pause(); streamerAudioPlayer.src = '';
+                    streamerVideoPlayer.pause(); streamerVideoPlayer.src = '';
+                    streamerImagePreview.src = '';
+                    streamerDocViewer.src = 'about:blank';
+
+                    rendererAudio.style.display = 'none';
+                    rendererVideo.style.display = 'none';
+                    rendererImage.style.display = 'none';
+                    rendererDocument.style.display = 'none';
+                    rendererFallback.style.display = 'none';
+
+                    if (!inputUrl) {
+                        showStreamerError("Please paste a valid share URL or file path.");
+                        return;
+                    }
+
+                    try {
+                        streamBtn.disabled = true;
+                        streamerStatus.textContent = "Fetching page source via proxy...";
+
+                        const response = await fetch(proxyUrl);
+                        if (!response.ok) {
+                            throw new Error(`Proxy responded with status code: ${response.status}`);
+                        }
+
+                        const htmlText = await response.text();
+                        streamerStatus.textContent = "Parsing stream URL and cleaning parameters...";
+
+                        // Match strings containing md5= up until the closing quote or space
+                        const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
+                        const match = htmlText.match(urlRegex);
+
+                        if (match && match[1]) {
+                            // Decode all HTML entities perfectly (handles &amp; -> &, &#39; -> ', etc.)
+                            let streamUrl = decodeHtmlEntities(match[1]);
+
+                            // Clean up any trailing quotes captured if the source HTML was single-quoted or double-quoted
+                            streamUrl = streamUrl.replace(/['"]+$/, '');
+
+                            // Safety Check: Enforce security blocks ONLY on the resolved, decoded direct URL extension
+                            const fileExt = getFileExtension(streamUrl);
+                            if (BLOCKED_EXTENSIONS.includes(fileExt)) {
+                                throw new Error(`The resolved file extension .${fileExt} is blocked for security reasons.`);
+                            }
+
+                            // Detect parsed file type
+                            const fileType = getFileType(streamUrl);
+                            const fileName = decodeURIComponent(streamUrl.split('/').pop().split('?')[0]);
+
+                            streamerStatus.textContent = `Resolving media preview [${fileType.toUpperCase()}]...`;
+                            streamerPlayerContainer.style.display = 'flex';
+
+                            // Check if it's a folder manifest
+                            if (fileExt === 'fileditch') {
+                                streamerStatus.textContent = "Loading folder structure...";
+                                const manifestProxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(streamUrl)}`;
+                                const manifestResponse = await fetch(manifestProxyUrl);
+                                if (!manifestResponse.ok) {
+                                    throw new Error(`Failed to load folder manifest (Status: ${manifestResponse.status})`);
+                                }
+                                const folderManifest = await manifestResponse.json();
+                                renderFolderPreview(folderManifest);
+                                streamerStatus.style.display = 'none';
+                                showToast("Folder manifest loaded successfully!", "success");
+                            }
+                            else if (fileType === 'audio') {
+                                rendererAudio.style.display = 'block';
+                                streamerAudioPlayer.src = streamUrl;
+                                streamerAudioPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
+                            }
+                            else if (fileType === 'video') {
+                                rendererVideo.style.display = 'block';
+                                streamerVideoPlayer.src = streamUrl;
+                                streamerVideoPlayer.play().catch(e => console.log("Autoplay blocked. Press play manually."));
+                            }
+                            else if (fileType === 'image') {
+                                rendererImage.style.display = 'block';
+                                streamerImagePreview.src = streamUrl;
+                            }
+                            else if (fileType === 'document') {
+                                rendererDocument.style.display = 'block';
+                                docTitleDisplay.textContent = fileName || "Document View";
+                                docExternalLink.href = streamUrl;
+                                streamerDocViewer.src = streamUrl;
+                            }
+                            else {
+                                rendererFallback.style.display = 'block';
+                                fallbackFileName.textContent = fileName || "Unsupported Preview File";
+                                fallbackExternalLink.href = streamUrl;
+                            }
+
+                            streamerStatus.style.display = 'none';
+                            showToast("Stream link successfully resolved!", "success");
+                        } else {
+                            throw new Error("Could not find a valid stream link in the HTML page. The link may have expired or is invalid.");
+                        }
+
+                    } catch (error) {
+                        showStreamerError(error.message);
+                    } finally {
+                        streamBtn.disabled = false;
+                    }
+                });
+
+                function showStreamerError(message) {
+                    streamerStatus.style.display = 'none';
+                    streamerError.textContent = `Error: ${message}`;
+                    streamerError.style.display = 'block';
+                    showToast(`Stream Error: ${message}`, 'error');
+                }
+
+                // File Processing and Validation
+                function handleFiles(files) {
+                    if (!files || files.length === 0) return;
+
+                    Array.from(files).forEach(file => {
+                        // Validation: File Size
+                        if (file.size > MAX_FILE_SIZE) {
+                            showToast(`"${file.name}" exceeds the 100 GB limit.`, 'error');
+                            return;
+                        }
+
+                        // Validation: File Extension
+                        const ext = getFileExtension(file.name);
+                        if (BLOCKED_EXTENSIONS.includes(ext)) {
+                            showToast(`.${ext} files are blocked for security reasons.`, 'error');
+                            return;
+                        }
+
+                        // Valid file, start uploading
+                        uploadFile(file);
+                    });
+                }
+
+                // Main Uploader Function using XMLHttpRequest for accurate progress reports
+                function uploadFile(file) {
+                    const id = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    const uploadMethod = uploadMethodSelect.value;
+
+                    // Update state
+                    activeUploadsCount++;
+                    updateQueueState();
+
+                    // Create active queue card matching new design variables
+                    const card = document.createElement('div');
+                    card.className = 'upload-card';
+                    card.id = id;
+                    card.innerHTML = `
                     <div class="card-top">
                         <div class="file-info">
                             <div class="file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div>
@@ -1365,215 +1416,51 @@
                     </div>
                     <div class="link-output-wrapper" id="response-${id}" style="display: none;"></div>
                 `;
-                queueList.appendChild(card);
+                    queueList.appendChild(card);
 
-                // Prep the request
-                const xhr = new XMLHttpRequest();
-                let startTime = Date.now();
-
-                // Cancel event
-                document.getElementById(`cancel-${id}`).addEventListener('click', () => {
-                    xhr.abort();
-                    card.remove();
-                    activeUploadsCount--;
-                    updateQueueState();
-                    showToast(`Cancelled upload of "${file.name}"`, 'info');
-                });
-
-                // XHR Progress listeners
-                xhr.upload.addEventListener('progress', (e) => {
-                    if (e.lengthComputable) {
-                        const percent = Math.round((e.loaded / e.total) * 100);
-                        const bar = document.getElementById(`bar-${id}`);
-                        const percentText = document.getElementById(`percent-${id}`);
-                        const speedText = document.getElementById(`speed-${id}`);
-
-                        if (bar) bar.style.width = `${percent}%`;
-                        if (percentText) percentText.innerText = `${percent}%`;
-
-                        // Speed calculation
-                        const now = Date.now();
-                        const duration = (now - startTime) / 1000; // in seconds
-                        if (duration > 0.5) {
-                            const speed = e.loaded / duration; // bytes per sec
-                            const remainingBytes = e.total - e.loaded;
-                            const eta = speed > 0 ? Math.round(remainingBytes / speed) : 0;
-                            
-                            if (speedText) {
-                                speedText.innerText = `${formatBytes(speed)}/s · ${formatTime(eta)} remaining`;
-                            }
-                        }
-                    }
-                });
-
-                xhr.onload = () => {
-                    activeUploadsCount--;
-                    updateQueueState();
-
-                    let responseData;
-                    try {
-                        responseData = JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        responseData = { error: 'Invalid response from server' };
-                    }
-
-                    if (xhr.status >= 200 && xhr.status < 300 && responseData.success) {
-                        handleUploadSuccess(id, file, responseData, card);
-                    } else {
-                        handleUploadError(id, file, responseData, card, xhr.status);
-                    }
-                };
-
-                xhr.onerror = () => {
-                    activeUploadsCount--;
-                    updateQueueState();
-                    handleUploadError(id, file, { error: 'Network error or CORS restriction. Check developer console.' }, card, 0);
-                };
-
-                // Trigger upload
-                if (uploadMethod === 'raw') {
-                    const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
-                    xhr.open('POST', uploadUrl, true);
-                    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-                    xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
-                    xhr.send(file);
-                } else {
-                    // Multipart Form-Data
-                    const uploadUrl = 'https://new.fileditch.com/upload.php';
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    xhr.open('POST', uploadUrl, true);
-                    xhr.send(formData);
-                }
-            }
-
-            function handleUploadSuccess(id, file, data, card) {
-                const badge = document.getElementById(`badge-${id}`);
-                const bar = document.getElementById(`bar-${id}`);
-                const percentText = document.getElementById(`percent-${id}`);
-                const speedText = document.getElementById(`speed-${id}`);
-                const cancelBtn = document.getElementById(`cancel-${id}`);
-                const responseDiv = document.getElementById(`response-${id}`);
-
-                if (badge) {
-                    badge.innerText = 'Success';
-                    badge.className = 'status-indicator success';
-                }
-                if (bar) {
-                    bar.classList.add('success');
-                    bar.style.width = '100%';
-                }
-                if (percentText) percentText.innerText = '100%';
-                if (speedText) speedText.innerText = 'Finished';
-                if (cancelBtn) cancelBtn.remove();
-
-                // Render Copyable URL Area
-                if (responseDiv) {
-                    const shareUrl = convertToShareUrl(data.url);
-                    responseDiv.style.display = 'flex';
-                    responseDiv.innerHTML = `
-                        <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
-                        <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
-                    `;
-
-                    // Copy Action
-                    document.getElementById(`copy-btn-${id}`).addEventListener('click', () => {
-                        copyToClipboard(shareUrl, `copy-btn-${id}`);
-                    });
-                }
-
-                // Add to history
-                const newHistoryItem = {
-                    id: 'hist_' + Date.now(),
-                    name: file.name,
-                    size: file.size,
-                    url: data.url,
-                    timestamp: Date.now(),
-                    mimeType: file.type
-                };
-                history.unshift(newHistoryItem);
-                localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-                renderHistory();
-
-                showToast(`Uploaded "${file.name}"`, 'success');
-
-                // Handle auto-clear logic
-                const autoClear = autoClearSelect.value;
-                if (autoClear === 'immediately') {
-                    card.remove();
-                } else if (autoClear === '5s') {
-                    setTimeout(() => {
-                        card.remove();
-                    }, 5000);
-                }
-            }
-
-            function handleUploadError(id, file, data, card, statusCode) {
-                const badge = document.getElementById(`badge-${id}`);
-                const bar = document.getElementById(`bar-${id}`);
-                const percentText = document.getElementById(`percent-${id}`);
-                const speedText = document.getElementById(`speed-${id}`);
-                const cancelBtn = document.getElementById(`cancel-${id}`);
-
-                if (badge) {
-                    badge.innerText = 'Failed';
-                    badge.className = 'status-indicator failed';
-                }
-                if (bar) {
-                    bar.style.backgroundColor = 'var(--danger)';
-                }
-                if (percentText) percentText.innerText = 'Error';
-                
-                let errorMsg = data.error || 'Server error';
-                if (statusCode === 403) {
-                    errorMsg = 'Blocked file extension (executables, scripts, etc)';
-                } else if (statusCode === 413) {
-                    errorMsg = 'File exceeds the server limit';
-                } else if (statusCode === 400) {
-                    errorMsg = 'Empty file or bad request';
-                }
-                
-                if (speedText) {
-                    speedText.innerText = errorMsg;
-                    speedText.style.color = 'var(--danger)';
-                }
-                if (cancelBtn) {
-                    cancelBtn.title = 'Dismiss card';
-                    cancelBtn.innerHTML = '✕';
-                    const newBtn = cancelBtn.cloneNode(true);
-                    cancelBtn.parentNode.replaceChild(newBtn, cancelBtn);
-                    newBtn.addEventListener('click', () => card.remove());
-                }
-
-                showToast(`Failed uploading "${file.name}": ${errorMsg}`, 'error');
-            }
-
-            // Folder Uploader Helper functions
-            function performSingleXhrUpload(file, onProgress, onXhrCreated) {
-                return new Promise((resolve, reject) => {
-                    const uploadMethod = uploadMethodSelect.value;
+                    // Prep the request
                     const xhr = new XMLHttpRequest();
-                    if (onXhrCreated) onXhrCreated(xhr);
-
                     let startTime = Date.now();
 
+                    // Cancel event
+                    document.getElementById(`cancel-${id}`).addEventListener('click', () => {
+                        xhr.abort();
+                        card.remove();
+                        activeUploadsCount--;
+                        updateQueueState();
+                        showToast(`Cancelled upload of "${file.name}"`, 'info');
+                    });
+
+                    // XHR Progress listeners
                     xhr.upload.addEventListener('progress', (e) => {
                         if (e.lengthComputable) {
                             const percent = Math.round((e.loaded / e.total) * 100);
-                            let speedText = 'Calculating...';
+                            const bar = document.getElementById(`bar-${id}`);
+                            const percentText = document.getElementById(`percent-${id}`);
+                            const speedText = document.getElementById(`speed-${id}`);
+
+                            if (bar) bar.style.width = `${percent}%`;
+                            if (percentText) percentText.innerText = `${percent}%`;
+
+                            // Speed calculation
                             const now = Date.now();
-                            const duration = (now - startTime) / 1000;
+                            const duration = (now - startTime) / 1000; // in seconds
                             if (duration > 0.5) {
-                                const speed = e.loaded / duration;
+                                const speed = e.loaded / duration; // bytes per sec
                                 const remainingBytes = e.total - e.loaded;
                                 const eta = speed > 0 ? Math.round(remainingBytes / speed) : 0;
-                                speedText = `${formatBytes(speed)}/s · ${formatTime(eta)} remaining`;
+
+                                if (speedText) {
+                                    speedText.innerText = `${formatBytes(speed)}/s · ${formatTime(eta)} remaining`;
+                                }
                             }
-                            onProgress(percent, speedText);
                         }
                     });
 
                     xhr.onload = () => {
+                        activeUploadsCount--;
+                        updateQueueState();
+
                         let responseData;
                         try {
                             responseData = JSON.parse(xhr.responseText);
@@ -1582,22 +1469,19 @@
                         }
 
                         if (xhr.status >= 200 && xhr.status < 300 && responseData.success) {
-                            resolve(responseData);
+                            handleUploadSuccess(id, file, responseData, card);
                         } else {
-                            let errorMsg = responseData.error || 'Server error';
-                            if (xhr.status === 403) {
-                                errorMsg = 'Blocked file extension';
-                            } else if (xhr.status === 413) {
-                                errorMsg = 'File exceeds the server limit';
-                            }
-                            reject(new Error(errorMsg));
+                            handleUploadError(id, file, responseData, card, xhr.status);
                         }
                     };
 
                     xhr.onerror = () => {
-                        reject(new Error('Network error or CORS restriction.'));
+                        activeUploadsCount--;
+                        updateQueueState();
+                        handleUploadError(id, file, { error: 'Network error or CORS restriction. Check developer console.' }, card, 0);
                     };
 
+                    // Trigger upload
                     if (uploadMethod === 'raw') {
                         const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
                         xhr.open('POST', uploadUrl, true);
@@ -1605,153 +1489,16 @@
                         xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
                         xhr.send(file);
                     } else {
+                        // Multipart Form-Data
                         const uploadUrl = 'https://new.fileditch.com/upload.php';
                         const formData = new FormData();
                         formData.append('file', file);
                         xhr.open('POST', uploadUrl, true);
                         xhr.send(formData);
                     }
-                });
-            }
-
-            async function uploadFolder(files, folderName) {
-                const id = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
-                // Update state
-                activeUploadsCount++;
-                updateQueueState();
-
-                const totalFiles = files.length;
-
-                // Create master progress card matching the styling
-                const card = document.createElement('div');
-                card.className = 'upload-card';
-                card.id = id;
-                card.innerHTML = `
-                    <div class="card-top">
-                        <div class="file-info">
-                            <div class="file-name" title="Folder: ${escapeHtml(folderName)}">📂 ${escapeHtml(folderName)}</div>
-                            <div class="file-size-status">
-                                <span id="folder-status-${id}">Uploading 0/${totalFiles} files</span>
-                                <span class="status-indicator uploading" id="badge-${id}">Uploading</span>
-                            </div>
-                        </div>
-                        <button class="btn-cancel" id="cancel-${id}" title="Cancel Folder Upload">✕</button>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="bar-${id}"></div>
-                    </div>
-                    <div class="progress-meta">
-                        <span id="percent-${id}">0%</span>
-                        <span id="speed-${id}">Preparing folder uploads...</span>
-                    </div>
-                    <div class="link-output-wrapper" id="response-${id}" style="display: none;"></div>
-                `;
-                queueList.appendChild(card);
-
-                let currentXhr = null;
-                let cancelled = false;
-
-                // Cancel button listener
-                document.getElementById(`cancel-${id}`).addEventListener('click', () => {
-                    cancelled = true;
-                    if (currentXhr) {
-                        currentXhr.abort();
-                    }
-                    card.remove();
-                    activeUploadsCount--;
-                    updateQueueState();
-                    showToast(`Cancelled upload of folder "${folderName}"`, 'info');
-                });
-
-                const fileMappings = [];
-                let totalBytesUploaded = 0;
-                let folderTotalSize = 0;
-                
-                // Filter out empty files or blocked extensions first
-                const validFiles = Array.from(files).filter(file => {
-                    folderTotalSize += file.size;
-                    const ext = getFileExtension(file.name);
-                    return !BLOCKED_EXTENSIONS.includes(ext) && file.size <= MAX_FILE_SIZE;
-                });
-
-                if (validFiles.length === 0) {
-                    activeUploadsCount--;
-                    updateQueueState();
-                    card.remove();
-                    showToast("No valid files in folder to upload.", "error");
-                    return;
                 }
 
-                try {
-                    for (let i = 0; i < validFiles.length; i++) {
-                        if (cancelled) return;
-                        const file = validFiles[i];
-
-                        // Update Status
-                        document.getElementById(`folder-status-${id}`).innerText = `Uploading ${i + 1}/${validFiles.length} files`;
-
-                        const responseData = await performSingleXhrUpload(file, (percent, speedText) => {
-                            // Calculate current progress
-                            const fileProgressBytes = (percent / 100) * file.size;
-                            const overallUploadedBytes = totalBytesUploaded + fileProgressBytes;
-                            const overallPercent = Math.min(99, Math.round((overallUploadedBytes / folderTotalSize) * 99));
-
-                            const bar = document.getElementById(`bar-${id}`);
-                            const percentText = document.getElementById(`percent-${id}`);
-                            const speedTextContainer = document.getElementById(`speed-${id}`);
-
-                            if (bar) bar.style.width = `${overallPercent}%`;
-                            if (percentText) percentText.innerText = `${overallPercent}%`;
-                            if (speedTextContainer) {
-                                speedTextContainer.innerText = `File ${i + 1}/${validFiles.length} · ${speedText}`;
-                            }
-                        }, (xhr) => {
-                            currentXhr = xhr;
-                        });
-
-                        totalBytesUploaded += file.size;
-
-                        // Save file metadata containing its relative path (or just name if webkitRelativePath is empty)
-                        fileMappings.push({
-                            path: file.webkitRelativePath || file.name,
-                            url: responseData.url,
-                            size: file.size
-                        });
-                    }
-
-                    if (cancelled) return;
-
-                    // All folder files uploaded, create .fileditch manifest
-                    document.getElementById(`folder-status-${id}`).innerText = `Finalizing folder...`;
-                    const speedTextContainer = document.getElementById(`speed-${id}`);
-                    if (speedTextContainer) speedTextContainer.innerText = `Uploading folder metadata (.fileditch)...`;
-
-                    const metadata = {
-                        type: "folder",
-                        name: folderName,
-                        files: fileMappings
-                    };
-                    const metadataString = JSON.stringify(metadata, null, 2);
-                    const blob = new Blob([metadataString], { type: 'application/json' });
-                    const metadataFile = new File([blob], `${folderName}.fileditch`, { type: 'application/json' });
-
-                    // Upload the .fileditch manifest
-                    const responseData = await performSingleXhrUpload(metadataFile, (percent, speedText) => {
-                        // Metadata upload progress
-                        const percentText = document.getElementById(`percent-${id}`);
-                        if (percentText) percentText.innerText = `${percent}%`;
-                        const bar = document.getElementById(`bar-${id}`);
-                        if (bar) bar.style.width = `${percent}%`;
-                    }, (xhr) => {
-                        currentXhr = xhr;
-                    });
-
-                    // Finished!
-                    activeUploadsCount--;
-                    updateQueueState();
-
-                    // Display success state in card
+                function handleUploadSuccess(id, file, data, card) {
                     const badge = document.getElementById(`badge-${id}`);
                     const bar = document.getElementById(`bar-${id}`);
                     const percentText = document.getElementById(`percent-${id}`);
@@ -1771,36 +1518,37 @@
                     if (speedText) speedText.innerText = 'Finished';
                     if (cancelBtn) cancelBtn.remove();
 
-                    // Convert to share URL
-                    const shareUrl = convertToShareUrl(responseData.url);
-
+                    // Render Copyable URL Area
                     if (responseDiv) {
+                        const shareUrl = convertToShareUrl(data.url);
                         responseDiv.style.display = 'flex';
                         responseDiv.innerHTML = `
-                            <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
-                            <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
-                        `;
+                        <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
+                        <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
+                    `;
+
+                        // Copy Action
                         document.getElementById(`copy-btn-${id}`).addEventListener('click', () => {
                             copyToClipboard(shareUrl, `copy-btn-${id}`);
                         });
                     }
 
-                    // Add folder to local history
+                    // Add to history
                     const newHistoryItem = {
                         id: 'hist_' + Date.now(),
-                        name: `${folderName} (Folder)`,
-                        size: folderTotalSize,
-                        url: responseData.url, // Store the main .fileditch viewer link
+                        name: file.name,
+                        size: file.size,
+                        url: data.url,
                         timestamp: Date.now(),
-                        mimeType: 'application/json' // will identify as folder
+                        mimeType: file.type
                     };
                     history.unshift(newHistoryItem);
                     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
                     renderHistory();
 
-                    showToast(`Uploaded folder "${folderName}" successfully`, 'success');
+                    showToast(`Uploaded "${file.name}"`, 'success');
 
-                    // Handle auto-clear
+                    // Handle auto-clear logic
                     const autoClear = autoClearSelect.value;
                     if (autoClear === 'immediately') {
                         card.remove();
@@ -1809,13 +1557,9 @@
                             card.remove();
                         }, 5000);
                     }
+                }
 
-                } catch (err) {
-                    if (cancelled) return;
-                    activeUploadsCount--;
-                    updateQueueState();
-
-                    // Show error state in card
+                function handleUploadError(id, file, data, card, statusCode) {
                     const badge = document.getElementById(`badge-${id}`);
                     const bar = document.getElementById(`bar-${id}`);
                     const percentText = document.getElementById(`percent-${id}`);
@@ -1830,8 +1574,18 @@
                         bar.style.backgroundColor = 'var(--danger)';
                     }
                     if (percentText) percentText.innerText = 'Error';
+
+                    let errorMsg = data.error || 'Server error';
+                    if (statusCode === 403) {
+                        errorMsg = 'Blocked file extension (executables, scripts, etc)';
+                    } else if (statusCode === 413) {
+                        errorMsg = 'File exceeds the server limit';
+                    } else if (statusCode === 400) {
+                        errorMsg = 'Empty file or bad request';
+                    }
+
                     if (speedText) {
-                        speedText.innerText = err.message || 'Error uploading folder';
+                        speedText.innerText = errorMsg;
                         speedText.style.color = 'var(--danger)';
                     }
                     if (cancelBtn) {
@@ -1842,45 +1596,342 @@
                         newBtn.addEventListener('click', () => card.remove());
                     }
 
-                    showToast(`Failed uploading folder "${folderName}": ${err.message}`, 'error');
+                    showToast(`Failed uploading "${file.name}": ${errorMsg}`, 'error');
                 }
-            }
 
-            // History Panel Handler
-            function renderHistory() {
-                if (history.length === 0) {
-                    historyEmpty.style.display = 'block';
+                // Folder Uploader Helper functions
+                function performSingleXhrUpload(file, onProgress, onXhrCreated) {
+                    return new Promise((resolve, reject) => {
+                        const uploadMethod = uploadMethodSelect.value;
+                        const xhr = new XMLHttpRequest();
+                        if (onXhrCreated) onXhrCreated(xhr);
+
+                        let startTime = Date.now();
+
+                        xhr.upload.addEventListener('progress', (e) => {
+                            if (e.lengthComputable) {
+                                const percent = Math.round((e.loaded / e.total) * 100);
+                                let speedText = 'Calculating...';
+                                const now = Date.now();
+                                const duration = (now - startTime) / 1000;
+                                if (duration > 0.5) {
+                                    const speed = e.loaded / duration;
+                                    const remainingBytes = e.total - e.loaded;
+                                    const eta = speed > 0 ? Math.round(remainingBytes / speed) : 0;
+                                    speedText = `${formatBytes(speed)}/s · ${formatTime(eta)} remaining`;
+                                }
+                                onProgress(percent, speedText);
+                            }
+                        });
+
+                        xhr.onload = () => {
+                            let responseData;
+                            try {
+                                responseData = JSON.parse(xhr.responseText);
+                            } catch (e) {
+                                responseData = { error: 'Invalid response from server' };
+                            }
+
+                            if (xhr.status >= 200 && xhr.status < 300 && responseData.success) {
+                                resolve(responseData);
+                            } else {
+                                let errorMsg = responseData.error || 'Server error';
+                                if (xhr.status === 403) {
+                                    errorMsg = 'Blocked file extension';
+                                } else if (xhr.status === 413) {
+                                    errorMsg = 'File exceeds the server limit';
+                                }
+                                reject(new Error(errorMsg));
+                            }
+                        };
+
+                        xhr.onerror = () => {
+                            reject(new Error('Network error or CORS restriction.'));
+                        };
+
+                        if (uploadMethod === 'raw') {
+                            const uploadUrl = `https://new.fileditch.com/upload.php?filename=${encodeURIComponent(file.name)}`;
+                            xhr.open('POST', uploadUrl, true);
+                            xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                            xhr.setRequestHeader('X-Filename', encodeURIComponent(file.name));
+                            xhr.send(file);
+                        } else {
+                            const uploadUrl = 'https://new.fileditch.com/upload.php';
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            xhr.open('POST', uploadUrl, true);
+                            xhr.send(formData);
+                        }
+                    });
+                }
+
+                async function uploadFolder(files, folderName) {
+                    const id = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+                    // Update state
+                    activeUploadsCount++;
+                    updateQueueState();
+
+                    const totalFiles = files.length;
+
+                    // Create master progress card matching the styling
+                    const card = document.createElement('div');
+                    card.className = 'upload-card';
+                    card.id = id;
+                    card.innerHTML = `
+                    <div class="card-top">
+                        <div class="file-info">
+                            <div class="file-name" title="Folder: ${escapeHtml(folderName)}">📂 ${escapeHtml(folderName)}</div>
+                            <div class="file-size-status">
+                                <span id="folder-status-${id}">Uploading 0/${totalFiles} files</span>
+                                <span class="status-indicator uploading" id="badge-${id}">Uploading</span>
+                            </div>
+                        </div>
+                        <button class="btn-cancel" id="cancel-${id}" title="Cancel Folder Upload">✕</button>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="bar-${id}"></div>
+                    </div>
+                    <div class="progress-meta">
+                        <span id="percent-${id}">0%</span>
+                        <span id="speed-${id}">Preparing folder uploads...</span>
+                    </div>
+                    <div class="link-output-wrapper" id="response-${id}" style="display: none;"></div>
+                `;
+                    queueList.appendChild(card);
+
+                    let currentXhr = null;
+                    let cancelled = false;
+
+                    // Cancel button listener
+                    document.getElementById(`cancel-${id}`).addEventListener('click', () => {
+                        cancelled = true;
+                        if (currentXhr) {
+                            currentXhr.abort();
+                        }
+                        card.remove();
+                        activeUploadsCount--;
+                        updateQueueState();
+                        showToast(`Cancelled upload of folder "${folderName}"`, 'info');
+                    });
+
+                    const fileMappings = [];
+                    let totalBytesUploaded = 0;
+                    let folderTotalSize = 0;
+
+                    // Filter out empty files or blocked extensions first
+                    const validFiles = Array.from(files).filter(file => {
+                        folderTotalSize += file.size;
+                        const ext = getFileExtension(file.name);
+                        return !BLOCKED_EXTENSIONS.includes(ext) && file.size <= MAX_FILE_SIZE;
+                    });
+
+                    if (validFiles.length === 0) {
+                        activeUploadsCount--;
+                        updateQueueState();
+                        card.remove();
+                        showToast("No valid files in folder to upload.", "error");
+                        return;
+                    }
+
+                    try {
+                        for (let i = 0; i < validFiles.length; i++) {
+                            if (cancelled) return;
+                            const file = validFiles[i];
+
+                            // Update Status
+                            document.getElementById(`folder-status-${id}`).innerText = `Uploading ${i + 1}/${validFiles.length} files`;
+
+                            const responseData = await performSingleXhrUpload(file, (percent, speedText) => {
+                                // Calculate current progress
+                                const fileProgressBytes = (percent / 100) * file.size;
+                                const overallUploadedBytes = totalBytesUploaded + fileProgressBytes;
+                                const overallPercent = Math.min(99, Math.round((overallUploadedBytes / folderTotalSize) * 99));
+
+                                const bar = document.getElementById(`bar-${id}`);
+                                const percentText = document.getElementById(`percent-${id}`);
+                                const speedTextContainer = document.getElementById(`speed-${id}`);
+
+                                if (bar) bar.style.width = `${overallPercent}%`;
+                                if (percentText) percentText.innerText = `${overallPercent}%`;
+                                if (speedTextContainer) {
+                                    speedTextContainer.innerText = `File ${i + 1}/${validFiles.length} · ${speedText}`;
+                                }
+                            }, (xhr) => {
+                                currentXhr = xhr;
+                            });
+
+                            totalBytesUploaded += file.size;
+
+                            // Save file metadata containing its relative path (or just name if webkitRelativePath is empty)
+                            fileMappings.push({
+                                path: file.webkitRelativePath || file.name,
+                                url: responseData.url,
+                                size: file.size
+                            });
+                        }
+
+                        if (cancelled) return;
+
+                        // All folder files uploaded, create .fileditch manifest
+                        document.getElementById(`folder-status-${id}`).innerText = `Finalizing folder...`;
+                        const speedTextContainer = document.getElementById(`speed-${id}`);
+                        if (speedTextContainer) speedTextContainer.innerText = `Uploading folder metadata (.fileditch)...`;
+
+                        const metadata = {
+                            type: "folder",
+                            name: folderName,
+                            files: fileMappings
+                        };
+                        const metadataString = JSON.stringify(metadata, null, 2);
+                        const blob = new Blob([metadataString], { type: 'application/json' });
+                        const metadataFile = new File([blob], `${folderName}.fileditch`, { type: 'application/json' });
+
+                        // Upload the .fileditch manifest
+                        const responseData = await performSingleXhrUpload(metadataFile, (percent, speedText) => {
+                            // Metadata upload progress
+                            const percentText = document.getElementById(`percent-${id}`);
+                            if (percentText) percentText.innerText = `${percent}%`;
+                            const bar = document.getElementById(`bar-${id}`);
+                            if (bar) bar.style.width = `${percent}%`;
+                        }, (xhr) => {
+                            currentXhr = xhr;
+                        });
+
+                        // Finished!
+                        activeUploadsCount--;
+                        updateQueueState();
+
+                        // Display success state in card
+                        const badge = document.getElementById(`badge-${id}`);
+                        const bar = document.getElementById(`bar-${id}`);
+                        const percentText = document.getElementById(`percent-${id}`);
+                        const speedText = document.getElementById(`speed-${id}`);
+                        const cancelBtn = document.getElementById(`cancel-${id}`);
+                        const responseDiv = document.getElementById(`response-${id}`);
+
+                        if (badge) {
+                            badge.innerText = 'Success';
+                            badge.className = 'status-indicator success';
+                        }
+                        if (bar) {
+                            bar.classList.add('success');
+                            bar.style.width = '100%';
+                        }
+                        if (percentText) percentText.innerText = '100%';
+                        if (speedText) speedText.innerText = 'Finished';
+                        if (cancelBtn) cancelBtn.remove();
+
+                        // Convert to share URL
+                        const shareUrl = convertToShareUrl(responseData.url);
+
+                        if (responseDiv) {
+                            responseDiv.style.display = 'flex';
+                            responseDiv.innerHTML = `
+                            <input type="text" class="link-input" value="${shareUrl}" readonly id="input-url-${id}">
+                            <button class="btn-copy" id="copy-btn-${id}">Copy Link</button>
+                        `;
+                            document.getElementById(`copy-btn-${id}`).addEventListener('click', () => {
+                                copyToClipboard(shareUrl, `copy-btn-${id}`);
+                            });
+                        }
+
+                        // Add folder to local history
+                        const newHistoryItem = {
+                            id: 'hist_' + Date.now(),
+                            name: `${folderName} (Folder)`,
+                            size: folderTotalSize,
+                            url: responseData.url, // Store the main .fileditch viewer link
+                            timestamp: Date.now(),
+                            mimeType: 'application/json' // will identify as folder
+                        };
+                        history.unshift(newHistoryItem);
+                        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+                        renderHistory();
+
+                        showToast(`Uploaded folder "${folderName}" successfully`, 'success');
+
+                        // Handle auto-clear
+                        const autoClear = autoClearSelect.value;
+                        if (autoClear === 'immediately') {
+                            card.remove();
+                        } else if (autoClear === '5s') {
+                            setTimeout(() => {
+                                card.remove();
+                            }, 5000);
+                        }
+
+                    } catch (err) {
+                        if (cancelled) return;
+                        activeUploadsCount--;
+                        updateQueueState();
+
+                        // Show error state in card
+                        const badge = document.getElementById(`badge-${id}`);
+                        const bar = document.getElementById(`bar-${id}`);
+                        const percentText = document.getElementById(`percent-${id}`);
+                        const speedText = document.getElementById(`speed-${id}`);
+                        const cancelBtn = document.getElementById(`cancel-${id}`);
+
+                        if (badge) {
+                            badge.innerText = 'Failed';
+                            badge.className = 'status-indicator failed';
+                        }
+                        if (bar) {
+                            bar.style.backgroundColor = 'var(--danger)';
+                        }
+                        if (percentText) percentText.innerText = 'Error';
+                        if (speedText) {
+                            speedText.innerText = err.message || 'Error uploading folder';
+                            speedText.style.color = 'var(--danger)';
+                        }
+                        if (cancelBtn) {
+                            cancelBtn.title = 'Dismiss card';
+                            cancelBtn.innerHTML = '✕';
+                            const newBtn = cancelBtn.cloneNode(true);
+                            cancelBtn.parentNode.replaceChild(newBtn, cancelBtn);
+                            newBtn.addEventListener('click', () => card.remove());
+                        }
+
+                        showToast(`Failed uploading folder "${folderName}": ${err.message}`, 'error');
+                    }
+                }
+
+                // History Panel Handler
+                function renderHistory() {
+                    if (history.length === 0) {
+                        historyEmpty.style.display = 'block';
+                        historyList.innerHTML = '';
+                        return;
+                    }
+
+                    historyEmpty.style.display = 'none';
                     historyList.innerHTML = '';
-                    return;
-                }
 
-                historyEmpty.style.display = 'none';
-                historyList.innerHTML = '';
+                    history.forEach(item => {
+                        const hCard = document.createElement('div');
+                        hCard.className = 'history-item';
 
-                history.forEach(item => {
-                    const hCard = document.createElement('div');
-                    hCard.className = 'history-item';
-                    
-                    // Build dynamic preview
-                    let previewHtml = '';
-                    if (item.mimeType) {
-                        if (item.mimeType.startsWith('image/')) {
-                            previewHtml = `
+                        // Build dynamic preview
+                        let previewHtml = '';
+                        if (item.mimeType) {
+                            if (item.mimeType.startsWith('image/')) {
+                                previewHtml = `
                                 <div class="history-preview-box">
                                     <img src="${item.url}" class="history-preview-img" alt="${escapeHtml(item.name)}" loading="lazy">
                                 </div>
                             `;
-                        } else if (item.mimeType.startsWith('audio/')) {
-                            previewHtml = `
+                            } else if (item.mimeType.startsWith('audio/')) {
+                                previewHtml = `
                                 <div class="history-preview-box">
                                     <audio controls class="history-preview-audio" src="${item.url}"></audio>
                                 </div>
                             `;
+                            }
                         }
-                    }
 
-                    const shareUrl = convertToShareUrl(item.url);
-                    hCard.innerHTML = `
+                        const shareUrl = convertToShareUrl(item.url);
+                        hCard.innerHTML = `
                         <div class="history-top">
                             <div class="history-title" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
                             <div class="history-actions">
@@ -1895,319 +1946,319 @@
                             <span>${new Date(item.timestamp).toLocaleDateString()}</span>
                         </div>
                     `;
-                    
-                    historyList.appendChild(hCard);
 
-                    // Copy Action
-                    document.getElementById(`hist-copy-${item.id}`).addEventListener('click', (e) => {
-                        copyToClipboard(shareUrl, `hist-copy-${item.id}`);
+                        historyList.appendChild(hCard);
+
+                        // Copy Action
+                        document.getElementById(`hist-copy-${item.id}`).addEventListener('click', (e) => {
+                            copyToClipboard(shareUrl, `hist-copy-${item.id}`);
+                        });
                     });
-                });
 
-                // Setup delete events
-                const deleteBtns = historyList.querySelectorAll('.delete');
-                deleteBtns.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const targetId = e.currentTarget.getAttribute('data-id');
-                        history = history.filter(item => item.id !== targetId);
-                        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-                        renderHistory();
-                        showToast('Removed from history log', 'info');
+                    // Setup delete events
+                    const deleteBtns = historyList.querySelectorAll('.delete');
+                    deleteBtns.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const targetId = e.currentTarget.getAttribute('data-id');
+                            history = history.filter(item => item.id !== targetId);
+                            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+                            renderHistory();
+                            showToast('Removed from history log', 'info');
+                        });
                     });
-                });
-            }
-
-            // Helper: Update Queue Status text
-            function updateQueueState() {
-                if (activeUploadsCount > 0) {
-                    queueEmpty.style.display = 'none';
-                    queueCount.innerText = `${activeUploadsCount} active`;
-                } else {
-                    queueCount.innerText = '0 active';
-                    if (queueList.children.length === 0) {
-                        queueEmpty.style.display = 'block';
-                    }
                 }
-            }
 
-            // Helper: Clipboard Copy with robust Fallback for Frame environments
-            function copyToClipboard(text, elementId) {
-                const btn = document.getElementById(elementId);
-                const originalText = btn ? btn.innerHTML : 'Copy';
-
-                const setSuccessState = () => {
-                    if (btn) {
-                        btn.innerHTML = 'Copied';
-                        btn.classList.add('success');
-                        showToast('Link copied to clipboard!', 'success');
-                        setTimeout(() => {
-                            btn.innerHTML = originalText;
-                            btn.classList.remove('success');
-                        }, 2000);
-                    }
-                };
-
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(setSuccessState).catch(err => {
-                        fallbackCopy(text, setSuccessState);
-                    });
-                } else {
-                    fallbackCopy(text, setSuccessState);
-                }
-            }
-
-            function fallbackCopy(text, callback) {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                textArea.style.top = "0";
-                textArea.style.left = "0";
-                textArea.style.position = "fixed";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    const successful = document.execCommand('copy');
-                    if (successful) {
-                        callback();
+                // Helper: Update Queue Status text
+                function updateQueueState() {
+                    if (activeUploadsCount > 0) {
+                        queueEmpty.style.display = 'none';
+                        queueCount.innerText = `${activeUploadsCount} active`;
                     } else {
+                        queueCount.innerText = '0 active';
+                        if (queueList.children.length === 0) {
+                            queueEmpty.style.display = 'block';
+                        }
+                    }
+                }
+
+                // Helper: Clipboard Copy with robust Fallback for Frame environments
+                function copyToClipboard(text, elementId) {
+                    const btn = document.getElementById(elementId);
+                    const originalText = btn ? btn.innerHTML : 'Copy';
+
+                    const setSuccessState = () => {
+                        if (btn) {
+                            btn.innerHTML = 'Copied';
+                            btn.classList.add('success');
+                            showToast('Link copied to clipboard!', 'success');
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.classList.remove('success');
+                            }, 2000);
+                        }
+                    };
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(setSuccessState).catch(err => {
+                            fallbackCopy(text, setSuccessState);
+                        });
+                    } else {
+                        fallbackCopy(text, setSuccessState);
+                    }
+                }
+
+                function fallbackCopy(text, callback) {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    textArea.style.position = "fixed";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            callback();
+                        } else {
+                            showToast('Failed to copy link', 'error');
+                        }
+                    } catch (err) {
                         showToast('Failed to copy link', 'error');
                     }
-                } catch (err) {
-                    showToast('Failed to copy link', 'error');
+                    document.body.removeChild(textArea);
                 }
-                document.body.removeChild(textArea);
-            }
 
-            // Helper: Show dynamic toast
-            function showToast(message, type = 'info') {
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                
-                let icon = 'ℹ️';
-                if (type === 'success') icon = '✓';
-                if (type === 'error') icon = '✕';
-                
-                toast.innerHTML = `
+                // Helper: Show dynamic toast
+                function showToast(message, type = 'info') {
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+
+                    let icon = 'ℹ️';
+                    if (type === 'success') icon = '✓';
+                    if (type === 'error') icon = '✕';
+
+                    toast.innerHTML = `
                     <span>${icon}</span>
                     <div>${escapeHtml(message)}</div>
                 `;
-                toastContainer.appendChild(toast);
+                    toastContainer.appendChild(toast);
 
-                // Auto remove
-                setTimeout(() => {
-                    toast.style.animation = 'slideIn 0.25s reverse forwards';
-                    setTimeout(() => toast.remove(), 250);
-                }, 3500);
-            }
-
-            // Utility: HTML Entity Decoder (Handles &amp;, &#39;, &quot;, &apos;, etc.)
-            function decodeHtmlEntities(str) {
-                const txt = document.createElement('textarea');
-                txt.innerHTML = str;
-                return txt.value;
-            }
-
-            // Utility: Detect file extension from string (either filename or full path url)
-            function getFileExtension(path) {
-                if (!path) return '';
-                const pathWithoutQuery = path.split('?')[0];
-                return pathWithoutQuery.split('.').pop().toLowerCase();
-            }
-
-            // Utility: Determine Media Type category based on resolved URL extension
-            function getFileType(url) {
-                const ext = getFileExtension(url);
-                
-                const audioExts = ['mp3', 'ogg', 'wav', 'm4a', 'flac', 'aac', 'opus', 'wma'];
-                const videoExts = ['mp4', 'mkv', 'webm', 'mov', 'avi', 'm4v', '3gp'];
-                const imageExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'tiff'];
-                const docExts = ['pdf', 'txt', 'log', 'json', 'md', 'csv'];
-                
-                if (audioExts.includes(ext)) return 'audio';
-                if (videoExts.includes(ext)) return 'video';
-                if (imageExts.includes(ext)) return 'image';
-                if (docExts.includes(ext)) return 'document';
-                return 'unknown';
-            }
-
-            // Utility: Format file size
-            function formatBytes(bytes, decimals = 2) {
-                if (bytes === 0) return '0 B';
-                const k = 1024;
-                const dm = decimals < 0 ? 0 : decimals;
-                const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-            }
-
-            // Utility: Format seconds into mm:ss
-            function formatTime(seconds) {
-                if (isNaN(seconds) || seconds === Infinity) return '--:--';
-                const h = Math.floor(seconds / 3600);
-                const m = Math.floor((seconds % 3600) / 60);
-                const s = Math.floor(seconds % 60);
-                if (h > 0) {
-                    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                    // Auto remove
+                    setTimeout(() => {
+                        toast.style.animation = 'slideIn 0.25s reverse forwards';
+                        setTimeout(() => toast.remove(), 250);
+                    }, 3500);
                 }
-                return `${m}:${s.toString().padStart(2, '0')}`;
-            }
 
-            // Utility: XSS mitigation
-            function escapeHtml(str) {
-                return str.replace(/[&<>'"]/g, 
-                    tag => ({
-                        '&': '&amp;',
-                        '<': '&lt;',
-                        '>': '&gt;',
-                        "'": '&#39;',
-                        '"': '&quot;'
-                    }[tag] || tag)
-                );
-            }
-
-            // Utility: Convert Fileditch URL to custom share URL with double hash
-            function convertToShareUrl(url) {
-                if (!url) return url;
-                
-                // 1. Try to match ?f= or &f= first
-                const matchF = url.match(/[\?&]f=([^&]+)/);
-                if (matchF && matchF[1]) {
-                    const filePath = matchF[1].replace(/^\/+/, '');
-                    let base = window.location.origin + window.location.pathname;
-                    return `${base}##${filePath}`;
+                // Utility: HTML Entity Decoder (Handles &amp;, &#39;, &quot;, &apos;, etc.)
+                function decodeHtmlEntities(str) {
+                    const txt = document.createElement('textarea');
+                    txt.innerHTML = str;
+                    return txt.value;
                 }
-                
-                // 2. Otherwise, look for /alphaX/... in the URL path
-                const matchAlpha = url.match(/(\/alpha\d+\/.*)/);
-                if (matchAlpha && matchAlpha[1]) {
-                    const filePath = matchAlpha[1].split('?')[0].replace(/^\/+/, '');
-                    let base = window.location.origin + window.location.pathname;
-                    return `${base}##${filePath}`;
+
+                // Utility: Detect file extension from string (either filename or full path url)
+                function getFileExtension(path) {
+                    if (!path) return '';
+                    const pathWithoutQuery = path.split('?')[0];
+                    return pathWithoutQuery.split('.').pop().toLowerCase();
                 }
-                
-                return url;
-            }
 
-            // Utility: Extract file path from URL hash
-            function getFilePathFromHash() {
-                const href = window.location.href;
-                const hashIndex = href.indexOf('#');
-                if (hashIndex === -1) return null;
-                const rawHash = href.substring(hashIndex);
-                return rawHash.replace(/^#+/, '').replace(/^\/+/, '');
-            }
+                // Utility: Determine Media Type category based on resolved URL extension
+                function getFileType(url) {
+                    const ext = getFileExtension(url);
 
-            // Modal Overlay Event Listeners
-            const uploadMethodInfoBtn = document.getElementById('upload-method-info-btn');
-            const streamerInfoBtn = document.getElementById('streamer-info-btn');
-            const updateLogBtn = document.getElementById('update-log-btn');
-            
-            const uploadMethodOverlay = document.getElementById('upload-method-overlay');
-            const streamerInfoOverlay = document.getElementById('streamer-info-overlay');
-            const updateLogOverlay = document.getElementById('update-log-overlay');
-            
-            const closeUploadMethodOverlay = document.getElementById('close-upload-method-overlay');
-            const closeStreamerInfoOverlay = document.getElementById('close-streamer-info-overlay');
-            const closeUpdateLogOverlay = document.getElementById('close-update-log-overlay');
+                    const audioExts = ['mp3', 'ogg', 'wav', 'm4a', 'flac', 'aac', 'opus', 'wma'];
+                    const videoExts = ['mp4', 'mkv', 'webm', 'mov', 'avi', 'm4v', '3gp'];
+                    const imageExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'tiff'];
+                    const docExts = ['pdf', 'txt', 'log', 'json', 'md', 'csv'];
 
-            uploadMethodInfoBtn.addEventListener('click', () => {
-                uploadMethodOverlay.style.display = 'flex';
-            });
-            streamerInfoBtn.addEventListener('click', () => {
-                streamerInfoOverlay.style.display = 'flex';
-            });
-            updateLogBtn.addEventListener('click', () => {
-                updateLogOverlay.style.display = 'flex';
-            });
-            
-            closeUploadMethodOverlay.addEventListener('click', () => {
-                uploadMethodOverlay.style.display = 'none';
-            });
-            closeStreamerInfoOverlay.addEventListener('click', () => {
-                streamerInfoOverlay.style.display = 'none';
-            });
-            closeUpdateLogOverlay.addEventListener('click', () => {
-                updateLogOverlay.style.display = 'none';
-            });
+                    if (audioExts.includes(ext)) return 'audio';
+                    if (videoExts.includes(ext)) return 'video';
+                    if (imageExts.includes(ext)) return 'image';
+                    if (docExts.includes(ext)) return 'document';
+                    return 'unknown';
+                }
 
-            // Close overlays when clicking outside the content
-            window.addEventListener('click', (e) => {
-                if (e.target === uploadMethodOverlay) {
+                // Utility: Format file size
+                function formatBytes(bytes, decimals = 2) {
+                    if (bytes === 0) return '0 B';
+                    const k = 1024;
+                    const dm = decimals < 0 ? 0 : decimals;
+                    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+                }
+
+                // Utility: Format seconds into mm:ss
+                function formatTime(seconds) {
+                    if (isNaN(seconds) || seconds === Infinity) return '--:--';
+                    const h = Math.floor(seconds / 3600);
+                    const m = Math.floor((seconds % 3600) / 60);
+                    const s = Math.floor(seconds % 60);
+                    if (h > 0) {
+                        return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                    }
+                    return `${m}:${s.toString().padStart(2, '0')}`;
+                }
+
+                // Utility: XSS mitigation
+                function escapeHtml(str) {
+                    return str.replace(/[&<>'"]/g,
+                        tag => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            "'": '&#39;',
+                            '"': '&quot;'
+                        }[tag] || tag)
+                    );
+                }
+
+                // Utility: Convert Fileditch URL to custom share URL with double hash
+                function convertToShareUrl(url) {
+                    if (!url) return url;
+
+                    // 1. Try to match ?f= or &f= first
+                    const matchF = url.match(/[\?&]f=([^&]+)/);
+                    if (matchF && matchF[1]) {
+                        const filePath = matchF[1].replace(/^\/+/, '');
+                        let base = window.location.origin + window.location.pathname;
+                        return `${base}##${filePath}`;
+                    }
+
+                    // 2. Otherwise, look for /alphaX/... in the URL path
+                    const matchAlpha = url.match(/(\/alpha\d+\/.*)/);
+                    if (matchAlpha && matchAlpha[1]) {
+                        const filePath = matchAlpha[1].split('?')[0].replace(/^\/+/, '');
+                        let base = window.location.origin + window.location.pathname;
+                        return `${base}##${filePath}`;
+                    }
+
+                    return url;
+                }
+
+                // Utility: Extract file path from URL hash
+                function getFilePathFromHash() {
+                    const href = window.location.href;
+                    const hashIndex = href.indexOf('#');
+                    if (hashIndex === -1) return null;
+                    const rawHash = href.substring(hashIndex);
+                    return rawHash.replace(/^#+/, '').replace(/^\/+/, '');
+                }
+
+                // Modal Overlay Event Listeners
+                const uploadMethodInfoBtn = document.getElementById('upload-method-info-btn');
+                const streamerInfoBtn = document.getElementById('streamer-info-btn');
+                const updateLogBtn = document.getElementById('update-log-btn');
+
+                const uploadMethodOverlay = document.getElementById('upload-method-overlay');
+                const streamerInfoOverlay = document.getElementById('streamer-info-overlay');
+                const updateLogOverlay = document.getElementById('update-log-overlay');
+
+                const closeUploadMethodOverlay = document.getElementById('close-upload-method-overlay');
+                const closeStreamerInfoOverlay = document.getElementById('close-streamer-info-overlay');
+                const closeUpdateLogOverlay = document.getElementById('close-update-log-overlay');
+
+                uploadMethodInfoBtn.addEventListener('click', () => {
+                    uploadMethodOverlay.style.display = 'flex';
+                });
+                streamerInfoBtn.addEventListener('click', () => {
+                    streamerInfoOverlay.style.display = 'flex';
+                });
+                updateLogBtn.addEventListener('click', () => {
+                    updateLogOverlay.style.display = 'flex';
+                });
+
+                closeUploadMethodOverlay.addEventListener('click', () => {
                     uploadMethodOverlay.style.display = 'none';
-                }
-                if (e.target === streamerInfoOverlay) {
+                });
+                closeStreamerInfoOverlay.addEventListener('click', () => {
                     streamerInfoOverlay.style.display = 'none';
-                }
-                if (e.target === updateLogOverlay) {
+                });
+                closeUpdateLogOverlay.addEventListener('click', () => {
                     updateLogOverlay.style.display = 'none';
-                }
-            });
+                });
 
-            // Check URL Hash on load to see if we need to auto-stream
-            function checkHashAndStream() {
-                const filePath = getFilePathFromHash();
-                if (filePath) {
-                    // Reconstruct standard Fileditch URL
-                    const fileditchUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
-                    streamerInput.value = fileditchUrl;
-                    
-                    // Trigger stream logic
-                    streamBtn.click();
-                    
-                    // Scroll to the streamer panel
-                    const streamerPanel = streamerInput.closest('.glass-panel');
-                    if (streamerPanel) {
-                        streamerPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Close overlays when clicking outside the content
+                window.addEventListener('click', (e) => {
+                    if (e.target === uploadMethodOverlay) {
+                        uploadMethodOverlay.style.display = 'none';
+                    }
+                    if (e.target === streamerInfoOverlay) {
+                        streamerInfoOverlay.style.display = 'none';
+                    }
+                    if (e.target === updateLogOverlay) {
+                        updateLogOverlay.style.display = 'none';
+                    }
+                });
+
+                // Check URL Hash on load to see if we need to auto-stream
+                function checkHashAndStream() {
+                    const filePath = getFilePathFromHash();
+                    if (filePath) {
+                        // Reconstruct standard Fileditch URL
+                        const fileditchUrl = `https://fileditchfiles.me/file.php?f=/${filePath}`;
+                        streamerInput.value = fileditchUrl;
+
+                        // Trigger stream logic
+                        streamBtn.click();
+
+                        // Scroll to the streamer panel
+                        const streamerPanel = streamerInput.closest('.glass-panel');
+                        if (streamerPanel) {
+                            streamerPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     }
                 }
-            }
 
-            // Resolve Fileditch HTML link to direct stream URL
-            async function resolveDirectLink(url) {
-                if (url.includes('md5=')) return url;
-                
-                let resolvedUrl = url;
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    resolvedUrl = `https://fileditchfiles.me/file.php?f=/${url.replace(/^\/+/, '')}`;
-                }
-                
-                const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
-                const response = await fetch(proxyUrl);
-                if (!response.ok) {
-                    throw new Error(`Failed to resolve direct link (Status: ${response.status})`);
-                }
-                const htmlText = await response.text();
-                const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
-                const match = htmlText.match(urlRegex);
-                if (match && match[1]) {
-                    let streamUrl = decodeHtmlEntities(match[1]);
-                    streamUrl = streamUrl.replace(/['"]+$/, '');
-                    return streamUrl;
-                }
-                throw new Error("Direct download token not found in page HTML.");
-            }
+                // Resolve Fileditch HTML link to direct stream URL
+                async function resolveDirectLink(url) {
+                    if (url.includes('md5=')) return url;
 
-            // Render folder component tree preview
-            function renderFolderPreview(manifest) {
-                currentFolderManifest = manifest;
-                
-                // Hide other players
-                rendererAudio.style.display = 'none';
-                rendererVideo.style.display = 'none';
-                rendererImage.style.display = 'none';
-                rendererDocument.style.display = 'none';
-                rendererFallback.style.display = 'none';
-                
-                // Show folder area
-                rendererFolder.style.display = 'block';
-                
-                folderNameDisplay.textContent = manifest.name || "Folder";
-                folderFilesCount.textContent = `${manifest.files.length} file${manifest.files.length === 1 ? '' : 's'}`;
-                
-                folderContentsList.innerHTML = '';
-                manifest.files.forEach(file => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.style.cssText = `
+                    let resolvedUrl = url;
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        resolvedUrl = `https://fileditchfiles.me/file.php?f=/${url.replace(/^\/+/, '')}`;
+                    }
+
+                    const proxyUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(resolvedUrl)}`;
+                    const response = await fetch(proxyUrl);
+                    if (!response.ok) {
+                        throw new Error(`Failed to resolve direct link (Status: ${response.status})`);
+                    }
+                    const htmlText = await response.text();
+                    const urlRegex = /(https:\/\/[^"\s>]+[\?&]md5=[^"\s>]+)/;
+                    const match = htmlText.match(urlRegex);
+                    if (match && match[1]) {
+                        let streamUrl = decodeHtmlEntities(match[1]);
+                        streamUrl = streamUrl.replace(/['"]+$/, '');
+                        return streamUrl;
+                    }
+                    throw new Error("Direct download token not found in page HTML.");
+                }
+
+                // Render folder component tree preview
+                function renderFolderPreview(manifest) {
+                    currentFolderManifest = manifest;
+
+                    // Hide other players
+                    rendererAudio.style.display = 'none';
+                    rendererVideo.style.display = 'none';
+                    rendererImage.style.display = 'none';
+                    rendererDocument.style.display = 'none';
+                    rendererFallback.style.display = 'none';
+
+                    // Show folder area
+                    rendererFolder.style.display = 'block';
+
+                    folderNameDisplay.textContent = manifest.name || "Folder";
+                    folderFilesCount.textContent = `${manifest.files.length} file${manifest.files.length === 1 ? '' : 's'}`;
+
+                    folderContentsList.innerHTML = '';
+                    manifest.files.forEach(file => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.style.cssText = `
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
@@ -2217,7 +2268,7 @@
                         border-radius: 6px;
                         gap: 1rem;
                     `;
-                    itemDiv.innerHTML = `
+                        itemDiv.innerHTML = `
                         <div style="display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1;">
                             <span style="font-size: 0.8rem; font-weight: 500; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: var(--text-primary);" title="${escapeHtml(file.path)}">${escapeHtml(file.path)}</span>
                             <span style="font-size: 0.7rem; color: var(--text-muted);">${formatBytes(file.size)}</span>
@@ -2227,206 +2278,245 @@
                             <a href="${file.url}" target="_blank" class="btn-history-action" style="text-decoration: none; font-size: 0.75rem; line-height: 1.8;">Download</a>
                         </div>
                     `;
-                    folderContentsList.appendChild(itemDiv);
-                });
-
-                // Attach Preview events to items inside folder
-                folderContentsList.querySelectorAll('.btn-preview-folder-file').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const fileUrl = e.currentTarget.getAttribute('data-url');
-                        streamerInput.value = fileUrl;
-                        streamBtn.click();
+                        folderContentsList.appendChild(itemDiv);
                     });
-                });
-            }
 
-            // Bind ZIP compiler action
-            btnDownloadFolderZip.onclick = async () => {
-                if (!currentFolderManifest || !currentFolderManifest.files || currentFolderManifest.files.length === 0) return;
-                
-                if (typeof JSZip === 'undefined') {
-                    showToast("ZIP library is not loaded. Please wait.", "error");
-                    return;
+                    // Attach Preview events to items inside folder
+                    folderContentsList.querySelectorAll('.btn-preview-folder-file').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const fileUrl = e.currentTarget.getAttribute('data-url');
+                            streamerInput.value = fileUrl;
+                            streamBtn.click();
+                        });
+                    });
                 }
 
-                const progressWrapper = document.getElementById('folder-zip-progress-wrapper');
-                const progressStatus = document.getElementById('folder-zip-status');
-                const progressPercent = document.getElementById('folder-zip-percent');
-                const progressBar = document.getElementById('folder-zip-progress-bar');
+                // Bind ZIP compiler action
+                btnDownloadFolderZip.onclick = async () => {
+                    if (!currentFolderManifest || !currentFolderManifest.files || currentFolderManifest.files.length === 0) return;
 
-                progressWrapper.style.display = 'block';
-                btnDownloadFolderZip.disabled = true;
-
-                try {
-                    const zip = new JSZip();
-                    const total = currentFolderManifest.files.length;
-
-                    for (let i = 0; i < total; i++) {
-                        const file = currentFolderManifest.files[i];
-                        progressStatus.innerText = `Resolving link ${i + 1}/${total}...`;
-                        
-                        // Extract direct tokenized download link
-                        let directUrl = '';
-                        try {
-                            directUrl = await resolveDirectLink(file.url);
-                        } catch (err) {
-                            console.warn(`Failed resolving direct url for ${file.path}, trying fallback`, err);
-                            directUrl = file.url;
-                        }
-
-                        progressStatus.innerText = `Downloading ${i + 1}/${total} (${escapeHtml(file.path.split('/').pop())})...`;
-
-                        // Fetch through proxy
-                        const proxyFileUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(directUrl)}`;
-                        const fileResponse = await fetch(proxyFileUrl);
-                        if (!fileResponse.ok) {
-                            throw new Error(`Failed downloading file "${file.path}" (Status: ${fileResponse.status})`);
-                        }
-                        const arrayBuffer = await fileResponse.arrayBuffer();
-
-                        // Add to ZIP (preserving paths)
-                        zip.file(file.path, arrayBuffer);
-
-                        // Progress
-                        const percent = Math.round(((i + 1) / total) * 100);
-                        progressBar.style.width = `${percent}%`;
-                        progressPercent.innerText = `${percent}%`;
+                    if (typeof JSZip === 'undefined') {
+                        showToast("ZIP library is not loaded. Please wait.", "error");
+                        return;
                     }
 
-                    progressStatus.innerText = "Generating ZIP file...";
-                    const zipBlob = await zip.generateAsync({ type: "blob" });
+                    const progressWrapper = document.getElementById('folder-zip-progress-wrapper');
+                    const progressStatus = document.getElementById('folder-zip-status');
+                    const progressPercent = document.getElementById('folder-zip-percent');
+                    const progressBar = document.getElementById('folder-zip-progress-bar');
 
-                    progressStatus.innerText = "Triggering download...";
-                    const url = URL.createObjectURL(zipBlob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${currentFolderManifest.name || "Folder"}.zip`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                    progressWrapper.style.display = 'block';
+                    btnDownloadFolderZip.disabled = true;
 
-                    progressStatus.innerText = "Done!";
-                    showToast(`Successfully compiled and downloaded ZIP for "${currentFolderManifest.name}"!`, "success");
+                    try {
+                        const zip = new JSZip();
+                        const total = currentFolderManifest.files.length;
 
-                } catch (err) {
-                    showToast(`ZIP generation failed: ${err.message}`, "error");
-                } finally {
-                    btnDownloadFolderZip.disabled = false;
-                    setTimeout(() => {
-                        progressWrapper.style.display = 'none';
-                    }, 3000);
-                }
-            };
+                        for (let i = 0; i < total; i++) {
+                            const file = currentFolderManifest.files[i];
+                            progressStatus.innerText = `Resolving link ${i + 1}/${total}...`;
 
-            // Listen to hashchange
-            window.addEventListener('hashchange', checkHashAndStream);
+                            // Extract direct tokenized download link
+                            let directUrl = '';
+                            try {
+                                directUrl = await resolveDirectLink(file.url);
+                            } catch (err) {
+                                console.warn(`Failed resolving direct url for ${file.path}, trying fallback`, err);
+                                directUrl = file.url;
+                            }
 
-            // Trigger on page load
-            checkHashAndStream();
-        });
-    </script>
+                            progressStatus.innerText = `Downloading ${i + 1}/${total} (${escapeHtml(file.path.split('/').pop())})...`;
 
-    <!-- Upload Methods Info Overlay -->
-    <div id="upload-method-overlay" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="panel-title">Upload Methods</h3>
-                <button class="btn-cancel" id="close-upload-method-overlay" style="font-size: 1.2rem;">✕</button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Multipart Form-Data (Recommended)</strong>
-                    Standard browser-compatible file upload method. It encodes the file as form fields. This is the most reliable, compatible, and highly recommended method for all browsers.
-                </div>
-                <div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Raw Body Stream</strong>
-                    Sends the raw file payload directly in the HTTP request body (`application/octet-stream`) without any wrapper metadata. This matches direct `curl -T` behavior and is slightly faster for large files, but is less supported by legacy proxies.
-                </div>
-            </div>
-        </div>
-    </div>
+                            // Fetch through proxy
+                            const proxyFileUrl = `https://api.pidi.workers.dev/?url=${encodeURIComponent(directUrl)}`;
+                            const fileResponse = await fetch(proxyFileUrl);
+                            if (!fileResponse.ok) {
+                                throw new Error(`Failed downloading file "${file.path}" (Status: ${fileResponse.status})`);
+                            }
+                            const arrayBuffer = await fileResponse.arrayBuffer();
 
-    <!-- Streamer Info Overlay -->
-    <div id="streamer-info-overlay" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="panel-title">Fileditch Streamer Info</h3>
-                <button class="btn-cancel" id="close-streamer-info-overlay" style="font-size: 1.2rem;">✕</button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">How it works:</strong>
-                    Paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>). The streamer fetches the HTML source of the page through a Worker proxy (<code>api.pidi.workers.dev</code>) to bypass browser CORS blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens), and loads the direct stream in the browser.
-                </div>
-                <div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Supported Filetypes for Streaming:</strong>
-                    <ul style="padding-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.4rem;">
-                        <li><strong>Audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
-                        <li><strong>Video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
-                        <li><strong>Image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
-                        <li><strong>Document:</strong> pdf, txt, log, json, md, csv</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                            // Add to ZIP (preserving paths)
+                            zip.file(file.path, arrayBuffer);
 
-    <!-- Update Log Overlay -->
-    <div id="update-log-overlay" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="panel-title">Update Log</h3>
-                <button class="btn-cancel" id="close-update-log-overlay" style="font-size: 1.2rem;">✕</button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
-                <div style="border-left: 2px solid var(--accent-purple); padding-left: 0.75rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">July 06, 2026</div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Folder Uploads & Client-side ZIP Compilation (.fileditch format)</strong>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                        <li>Added support for full folder uploading, recursively transmitting files.</li>
-                        <li>Compiles metadata into a custom <code>.fileditch</code> manifest format.</li>
-                        <li>Added folder tree explorer displaying directory structures for shared folder links.</li>
-                        <li>Added client-side ZIP packaging via JSZip to download whole folders directly.</li>
-                    </ul>
+                            // Progress
+                            const percent = Math.round(((i + 1) / total) * 100);
+                            progressBar.style.width = `${percent}%`;
+                            progressPercent.innerText = `${percent}%`;
+                        }
+
+                        progressStatus.innerText = "Generating ZIP file...";
+                        const zipBlob = await zip.generateAsync({ type: "blob" });
+
+                        progressStatus.innerText = "Triggering download...";
+                        const url = URL.createObjectURL(zipBlob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${currentFolderManifest.name || "Folder"}.zip`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+
+                        progressStatus.innerText = "Done!";
+                        showToast(`Successfully compiled and downloaded ZIP for "${currentFolderManifest.name}"!`, "success");
+
+                    } catch (err) {
+                        showToast(`ZIP generation failed: ${err.message}`, "error");
+                    } finally {
+                        btnDownloadFolderZip.disabled = false;
+                        setTimeout(() => {
+                            progressWrapper.style.display = 'none';
+                        }, 3000);
+                    }
+                };
+
+                // Listen to hashchange
+                window.addEventListener('hashchange', checkHashAndStream);
+
+                // Trigger on page load
+                checkHashAndStream();
+            });
+        </script>
+
+        <!-- Upload Methods Info Overlay -->
+        <div id="upload-method-overlay" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="panel-title">Upload Methods</h3>
+                    <button class="btn-cancel" id="close-upload-method-overlay" style="font-size: 1.2rem;">✕</button>
                 </div>
-                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 25, 2026</div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Custom Double-Hash sharing links & ad-free streaming</strong>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                        <li>Files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>) instead of standard FileDitch page links.</li>
-                        <li>Shared hash links automatically load and play in the ad-free, tracker-free media player.</li>
-                        <li>Cleaned up all <code>fileditchfiles.me</code> domain references from the frontend.</li>
-                    </ul>
-                </div>
-                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 24, 2026</div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Consolidated Uploads Interface & Info Overlays</strong>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                        <li>Merged Active Queue and Upload History into a single unified "Uploads Interface" panel.</li>
-                        <li>Relocated the Auto-Clear Queue configuration directly into the uploads header.</li>
-                        <li>Added interactive explanation modals for Upload Methods and Fileditch Streamer.</li>
-                        <li>Added a policy warning indicating file deletes are client-side only.</li>
-                    </ul>
-                </div>
-                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 23, 2026</div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">ZIP Streaming Deprecated</strong>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                        <li>Removed JSZip and unzipit range-request streaming libraries.</li>
-                        <li>Removed all ZIP-related code references from the main panel and FAQ list.</li>
-                    </ul>
-                </div>
-                <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">June 20, 2026</div>
-                    <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Initial Launch</strong>
-                    <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
-                        <li>Dark mode obsidian theme with monospace typography.</li>
-                        <li>Multipart and Raw upload support with instant media previews.</li>
-                    </ul>
+                <div class="modal-body">
+                    <div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Multipart
+                            Form-Data (Recommended)</strong>
+                        Standard browser-compatible file upload method. It encodes the file as form fields. This is the
+                        most reliable, compatible, and highly recommended method for all browsers.
+                    </div>
+                    <div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Raw Body
+                            Stream</strong>
+                        Sends the raw file payload directly in the HTTP request body (`application/octet-stream`)
+                        without any wrapper metadata. This matches direct `curl -T` behavior and is slightly faster for
+                        large files, but is less supported by legacy proxies.
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Streamer Info Overlay -->
+        <div id="streamer-info-overlay" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="panel-title">File Viewer Info</h3>
+                    <button class="btn-cancel" id="close-streamer-info-overlay" style="font-size: 1.2rem;">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">How it
+                            works:</strong>
+                        Paste a share link or raw path (e.g., <code>##alpha10/4e4f417ba5d06168b288/filename.png</code>).
+                        The viewer fetches the HTML source of the page through a Worker proxy to bypass browser CORS
+                        blocks, extracts the temporary direct download link (with security `md5` & `expires` tokens),
+                        and loads the file directly in the browser.
+                    </div>
+                    <div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Supported
+                            Filetypes for viewing:</strong>
+                        <ul
+                            style="padding-left: 1.2rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                            <li><strong>Audio:</strong> mp3, ogg, wav, m4a, flac, aac, opus, wma</li>
+                            <li><strong>Video:</strong> mp4, mkv, webm, mov, avi, m4v, 3gp</li>
+                            <li><strong>Image:</strong> png, jpg, jpeg, gif, webp, bmp, ico, tiff</li>
+                            <li><strong>Document:</strong> pdf, txt, log, json, md, csv</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Log Overlay -->
+        <div id="update-log-overlay" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="panel-title">Update Log</h3>
+                    <button class="btn-cancel" id="close-update-log-overlay" style="font-size: 1.2rem;">✕</button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 0.5rem;">
+                    <div
+                        style="border-left: 2px solid var(--accent-purple); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                        <div
+                            style="font-size: 0.75rem; color: var(--text-purple); font-weight: bold; margin-bottom: 0.25rem;">
+                            July 06, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Folder
+                            Uploads & Client-side ZIP Compilation (.fileditch format)</strong>
+                        <ul
+                            style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                            <li>Added support for full folder uploading, recursively transmitting files.</li>
+                            <li>Compiles metadata into a custom <code>.fileditch</code> manifest format.</li>
+                            <li>Added folder tree explorer displaying directory structures for shared folder links.</li>
+                            <li>Added client-side ZIP packaging via JSZip to download whole folders directly.</li>
+                        </ul>
+                    </div>
+                    <div
+                        style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                        <div
+                            style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
+                            June 25, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Custom
+                            Double-Hash sharing links & ad-free streaming</strong>
+                        <ul
+                            style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                            <li>Files uploaded now generate and copy clean hash links (e.g. <code>##alpha10/...</code>)
+                                instead of standard FileDitch page links.</li>
+                            <li>Shared hash links automatically load and play in the ad-free, tracker-free media player.
+                            </li>
+                            <li>Cleaned up all <code>fileditchfiles.me</code> domain references from the frontend.</li>
+                        </ul>
+                    </div>
+                    <div
+                        style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                        <div
+                            style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
+                            June 24, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Consolidated
+                            Uploads Interface & Info Overlays</strong>
+                        <ul
+                            style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                            <li>Merged Active Queue and Upload History into a single unified "Uploads Interface" panel.
+                            </li>
+                            <li>Relocated the Auto-Clear Queue configuration directly into the uploads header.</li>
+                            <li>Added interactive explanation modals for Upload Methods and File Viewer.</li>
+                            <li>Added a policy warning indicating file deletes are client-side only.</li>
+                        </ul>
+                    </div>
+                    <div
+                        style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem; margin-bottom: 1.25rem;">
+                        <div
+                            style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
+                            June 23, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">ZIP
+                            Streaming Deprecated</strong>
+                        <ul
+                            style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                            <li>Removed JSZip and unzipit range-request streaming libraries.</li>
+                            <li>Removed all ZIP-related code references from the main panel and FAQ list.</li>
+                        </ul>
+                    </div>
+                    <div style="border-left: 2px solid rgba(255, 255, 255, 0.15); padding-left: 0.75rem;">
+                        <div
+                            style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.25rem;">
+                            June 20, 2026</div>
+                        <strong style="color: var(--text-primary); display: block; margin-bottom: 0.25rem;">Initial
+                            Launch</strong>
+                        <ul
+                            style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem;">
+                            <li>Dark mode obsidian theme with monospace typography.</li>
+                            <li>Multipart and Raw upload support with instant media previews.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
+
 </html>
